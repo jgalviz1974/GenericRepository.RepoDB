@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Gasolutions.Core.GenericRepository.RepoDB.csproj" />
+  <Project Path="tests/Gasolutions.Core.GenericRepository.RepoDB.Tests.csproj" />
+</Solution>

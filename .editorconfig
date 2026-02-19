@@ -1,0 +1,28 @@
+root = true
+
+[*.cs]
+# preferir calificar miembros con this/Me
+dotnet_style_qualification_for_field = true:warning
+dotnet_style_qualification_for_property = true:warning
+dotnet_style_qualification_for_method = true:warning
+dotnet_style_qualification_for_event = true:warning
+
+# By default: warn about missing XML comments
+dotnet_diagnostic.CS1591.severity = warning
+
+# keep other project preferences
+dotnet_diagnostic.IDE0047.severity = warning
+
+# Disable CS1591 for generated Connected Services files and Reference generated files
+[**/Connected Services/**/*.cs]
+dotnet_diagnostic.CS1591.severity = none
+
+[**/GlobalUsings.cs]
+dotnet_diagnostic.SA1200.severity = none
+
+[**/*Reference.cs]
+dotnet_diagnostic.CS1591.severity = none
+
+# Disable StyleCop rule SA1633: File must have header
+[*.{cs,vb}]
+dotnet_diagnostic.SA1633.severity = none

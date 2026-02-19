@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>13.0</LangVersion>
+    <IsTestProject>true</IsTestProject>
+    <Title>Gasolutions Core Repository Tests</Title>
+    <Authors>José David Galviz Muñoz</Authors>
+    <Company>Gasolutions SAS</Company>
+    <Description>Unit tests for generic repository pattern implementation with RepoDB.</Description>
+    <Copyright>Gasolutions®</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="Moq" Version="4.20.70" />
+    <PackageReference Include="RepoDb.SqlServer" Version="1.13.2-alpha1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\Gasolutions.Core.GenericRepository.RepoDB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="Gasolutions.Core.Repository" />
+    <Using Include="Gasolutions.Core.Repository.Interfaces" />
+    <Using Include="System.Data" />
+    <Using Include="Moq" />
+  </ItemGroup>
+
+</Project>
