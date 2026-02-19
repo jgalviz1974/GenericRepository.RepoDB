@@ -10,6 +10,8 @@
     <Copyright>Gasolutions®</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<RepositoryUrl>https://github.com/jgalviz1974/GenericRepository.RepoDB</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<AssemblyVersion>1.0.8.0</AssemblyVersion>
