@@ -164,6 +164,11 @@ namespace Gasolutions.Core.Repository
         /// <returns>The number of deleted rows.</returns>
         public int Delete(object whereOrPrimaryKey)
         {
+            if (whereOrPrimaryKey == null)
+            {
+                throw new ArgumentNullException(nameof(whereOrPrimaryKey), "Where clause or primary key cannot be null.");
+            }
+
             using IDbConnection connection = this.CreateConnection();
             return connection.Delete<T>(whereOrPrimaryKey);
         }
