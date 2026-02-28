@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <LangVersion>13.0</LangVersion>
     <IsTestProject>true</IsTestProject>
+    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
     <Title>Gasolutions Core Repository Tests</Title>
     <Authors>José David Galviz Muñoz</Authors>
     <Company>Gasolutions SAS</Company>
