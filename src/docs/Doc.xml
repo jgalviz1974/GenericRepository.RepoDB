@@ -143,9 +143,10 @@
             </summary>
             <param name="connectionString">Connection string used to open SQL Server connections.</param>
         </member>
-        <member name="P:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ConnectionString">
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.#ctor(System.Func{System.Data.IDbConnection})">
             <summary>
-            Gets or sets the connection string used by the repository.
+            Initializes a new instance of the <see cref="T:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2"/> class.
+            Initializes a new instance with a connection factory (for testing).
             </summary>
         </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Insert(`0)">

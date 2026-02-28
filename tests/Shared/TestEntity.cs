@@ -1,4 +1,4 @@
-// <copyright file="TestEntities.cs" company="Gasolutions SAS">
+// <copyright file="TestEntity.cs" company="Gasolutions SAS">
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
 // </copyright>
 

@@ -21,26 +21,16 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Merge_NullEntity_ThrowsArgumentNullException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var mockConnection = new SqlConnection(connectionString);
-            var mockTransaction = new Mock<IDbTransaction>();
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            SqlConnection mockConnection = new(connectionString);
+            Mock<IDbTransaction> mockTransaction = new();
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() =>
                 repository.Merge(null!, mockConnection, mockTransaction.Object));
             Assert.Equal("entity", exception.ParamName);
             Assert.Contains("Entity cannot be null.", exception.Message);
-        }
-
-        /// <summary>
-        /// Helper test entity class for testing purposes.
-        /// </summary>
-        private class TestEntity
-        {
-            public int Id { get; set; }
-
-            public string Name { get; set; } = string.Empty;
         }
 
         /// <summary>
@@ -50,12 +40,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Insert_NullEntity_ThrowsArgumentNullException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             TestEntity? entity = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => repository.Insert(entity!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.Insert(entity!));
             Assert.Equal("entity", exception.ParamName);
             Assert.Contains("Entity cannot be null.", exception.Message);
         }
@@ -72,9 +62,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Insert_ValidEntity_ReturnsGeneratedKey()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entity = new TestEntity { Id = 1, Name = "Test" };
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            TestEntity entity = new() { Id = 1, Name = "Test" };
 
             // Act & Assert
             // We expect a SqlException because there's no actual database connection,
@@ -93,10 +83,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Merge_ValidEntityAndQualifiers_CallsMergeAndReturnsKey()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entity = new TestEntity { Id = 1, Name = "Test" };
-            var qualifiers = new List<RepoDb.Field> { new("Id") };
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            TestEntity entity = new() { Id = 1, Name = "Test" };
+            List<RepoDb.Field> qualifiers = [new("Id")];
 
             // Act & Assert
             // We expect a SqlException because there's no actual database connection,
@@ -113,10 +103,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Merge_EmptyQualifiers_CallsMergeWithEmptyQualifiers()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entity = new TestEntity { Id = 1, Name = "Test" };
-            var qualifiers = new List<RepoDb.Field>(); // Empty collection
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            TestEntity entity = new() { Id = 1, Name = "Test" };
+            List<RepoDb.Field> qualifiers = []; // Empty collection
 
             // Act & Assert
             // We expect a SqlException because there's no actual database connection,
@@ -128,24 +118,23 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException when commandText is null, empty, or whitespace.
         /// </summary>
         /// <param name="commandText">The invalid command text value to test.</param>
-        /// <param name="displayName">Display name for the test case.</param>
         [Theory]
-        [InlineData(null, "null")]
-        [InlineData("", "empty string")]
-        [InlineData(" ", "single space")]
-        [InlineData("   ", "multiple spaces")]
-        [InlineData("\t", "tab character")]
-        [InlineData("\n", "newline character")]
-        [InlineData("\r\n", "carriage return and newline")]
-        [InlineData("  \t\n  ", "mixed whitespace")]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("   ")]
+        [InlineData("\t")]
+        [InlineData("\n")]
+        [InlineData("\r\n")]
+        [InlineData("  \t\n  ")]
         public void ExecuteScalar_InvalidCommandText_ThrowsArgumentException(string? commandText)
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=localhost;Database=Test;");
-            var commandType = CommandType.Text;
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=localhost;Database=Test;");
+            const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => repository.ExecuteScalar(commandText!, commandType));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => repository.ExecuteScalar(commandText!, commandType));
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
             Assert.Equal("commandText", exception.ParamName);
         }
@@ -157,41 +146,57 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_NullCommandText_ExceptionContainsCorrectParameterName()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=localhost;Database=Test;");
-            string? commandText = null;
-            var commandType = CommandType.Text;
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=localhost;Database=Test;");
+            const string? commandText = null;
+            const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => repository.ExecuteScalar(commandText!, commandType));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => repository.ExecuteScalar(commandText!, commandType));
             Assert.Equal("commandText", exception.ParamName);
         }
 
         /// <summary>
-        /// Tests that ExecuteScalar(string, CommandType) with valid commandText attempts execution.
-        /// NOTE: This test is skipped because SqlConnection is a sealed class and cannot be mocked with Moq.
-        /// The ExecuteScalar extension method from RepoDb cannot be intercepted without creating fakes (which is forbidden).
-        /// Integration testing or a testable design pattern (e.g., connection factory abstraction) would be required
-        /// to fully test the execution path.
+        /// Tests that ExecuteScalar(string, CommandType) with valid commandText attempts execution using a mocked connection.
+        /// This test demonstrates how the factory pattern enables unit testing by injecting a mocked IDbConnection.
         /// </summary>
         /// <param name="commandType">The command type to test.</param>
-        [Theory(Skip = "Cannot mock sealed SqlConnection class. Requires integration test or refactoring for testability.")]
+        [Theory]
         [InlineData(CommandType.Text)]
         [InlineData(CommandType.StoredProcedure)]
         [InlineData(CommandType.TableDirect)]
-        public void ExecuteScalar_ValidCommandText_ExecutesScalarQuery()
+        public void ExecuteScalar_ValidCommandText_ExecutesScalarQuery(CommandType commandType)
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=localhost;Database=Test;");
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+
+            _ = mockConnection
+                .Setup(c => c.CreateCommand())
+                .Returns(mockCommand.Object);
+
+            _ = mockCommand.SetupProperty(c => c.CommandType, commandType);
+            _ = mockCommand.SetupProperty(c => c.CommandText);
+            _ = mockCommand
+                .Setup(c => c.ExecuteScalar())
+                .Returns(42);
+
+            IDbConnection ConnectionFactory()
+            {
+                return mockConnection.Object;
+            }
+
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(ConnectionFactory);
+            const string validCommandText = "SELECT COUNT(*) FROM TestTable";
 
             // Act
-            // Cannot test: SqlConnection is sealed and RepoDb's ExecuteScalar is an extension method
-            // Proper testing would require:
-            // 1. Integration test with real database
-            // 2. Refactoring to inject IDbConnection or connection factory
-            // 3. Wrapper abstraction around RepoDb extensions
+            string result = repository.ExecuteScalar(validCommandText, commandType);
 
             // Assert
-            // Would verify: result is returned as string
+            Assert.Equal("42", result);
+            mockConnection.Verify(c => c.CreateCommand(), Times.Once);
+            mockCommand.Verify(c => c.ExecuteScalar(), Times.Once);
+            Assert.Equal(validCommandText, mockCommand.Object.CommandText);
+            Assert.Equal(commandType, mockCommand.Object.CommandType);
         }
 
         /// <summary>
@@ -201,19 +206,19 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_DifferentCommandTypes_PassesToExecuteScalar()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=localhost;Database=Test;");
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=localhost;Database=Test;");
 
             // Act & Assert
             // Test parameter validation - this executes before database connection attempt
-            var exception1 = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception1 = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(null!, CommandType.Text));
             Assert.Equal("commandText", exception1.ParamName);
 
-            var exception2 = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception2 = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(string.Empty, CommandType.Text));
             Assert.Equal("commandText", exception2.ParamName);
 
-            var exception3 = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception3 = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar("   ", CommandType.Text));
             Assert.Equal("commandText", exception3.ParamName);
 
@@ -229,12 +234,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void InsertAll_NullEntities_ThrowsArgumentNullException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             IEnumerable<TestEntity>? entities = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => repository.InsertAll(entities!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.InsertAll(entities!));
             Assert.Equal("entities", exception.ParamName);
             Assert.Contains("Entities collection cannot be null.", exception.Message);
         }
@@ -249,9 +254,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void InsertAll_EmptyCollection_ReturnsZero()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entities = new List<TestEntity>();
+            const string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [];
 
             // Act & Assert
             // We expect a SqlException or similar because there's no actual database connection,
@@ -271,7 +276,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Constructor_ValidConnectionString_InitializesSuccessfully(string connectionString)
         {
             // Arrange & Act
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Assert
             Assert.NotNull(repository);
@@ -287,7 +292,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             string connectionString = string.Empty;
 
             // Act
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Assert
             Assert.NotNull(repository);
@@ -304,7 +309,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Constructor_WhitespaceConnectionString_InitializesSuccessfully(string connectionString)
         {
             // Arrange & Act
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Assert
             Assert.NotNull(repository);
@@ -320,7 +325,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             string connectionString = new string('a', 10000) + ";";
 
             // Act
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Assert
             Assert.NotNull(repository);
@@ -336,7 +341,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Constructor_ConnectionStringWithSpecialCharacters_InitializesSuccessfully(string connectionString)
         {
             // Arrange & Act
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Assert
             Assert.NotNull(repository);
@@ -349,12 +354,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Constructor_DifferentGenericTypes_InitializesSuccessfully()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
+            const string connectionString = "Server=localhost;Database=TestDb;";
 
             // Act
-            var repositoryInt = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var repositoryLong = new WriteGenericRepositoryRepoDB<TestEntity, long>(connectionString);
-            var repositoryGuid = new WriteGenericRepositoryRepoDB<TestEntity, Guid>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repositoryInt = new(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, long> repositoryLong = new(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, Guid> repositoryGuid = new(connectionString);
 
             // Assert
             Assert.NotNull(repositoryInt);
@@ -378,13 +383,13 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_NullOrWhitespaceCommandText_ThrowsArgumentException(string? invalidCommandText)
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var commandType = CommandType.Text;
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            const CommandType commandType = CommandType.Text;
             IEnumerable<DbParameter>? parameters = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(invalidCommandText!, commandType, parameters));
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
@@ -402,12 +407,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_NullCommandTextWithDifferentCommandTypes_ThrowsArgumentException(CommandType commandType)
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            string? commandText = null;
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            const string? commandText = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(commandText!, commandType));
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
@@ -421,13 +426,13 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_EmptyCommandTextWithLongTKey_ThrowsArgumentException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, long>(connectionString);
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, long> repository = new(connectionString);
             string commandText = string.Empty;
-            var commandType = CommandType.Text;
+            const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(commandText, commandType));
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
@@ -441,13 +446,13 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_WhitespaceCommandTextWithGuidTKey_ThrowsArgumentException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, Guid>(connectionString);
-            string commandText = "   ";
-            var commandType = CommandType.StoredProcedure;
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, Guid> repository = new(connectionString);
+            const string commandText = "   ";
+            const CommandType commandType = CommandType.StoredProcedure;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(commandText, commandType));
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
@@ -461,17 +466,17 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_NullCommandTextWithParameters_ThrowsArgumentException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            string? commandText = null;
-            var commandType = CommandType.Text;
-            var parameters = new List<DbParameter>
-            {
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            const string? commandText = null;
+            const CommandType commandType = CommandType.Text;
+            List<DbParameter> parameters =
+            [
                 new SqlParameter("@Id", 1),
-            };
+            ];
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteScalar(commandText!, commandType, parameters));
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
@@ -485,12 +490,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void MergeAll_NullEntities_ThrowsArgumentNullException()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             IEnumerable<TestEntity>? entities = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => repository.MergeAll(entities!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.MergeAll(entities!));
             Assert.Equal("entities", exception.ParamName);
             Assert.Contains("Entities collection cannot be null.", exception.Message);
         }
@@ -504,7 +509,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Delete_NullConnectionString_ThrowsArgumentException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(null!);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new((string)null!);
             object whereOrPrimaryKey = new();
 
             // Act & Assert
@@ -520,7 +525,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Delete_EmptyConnectionString_ThrowsArgumentException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(string.Empty);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(string.Empty);
             object whereOrPrimaryKey = new();
 
             // Act & Assert
@@ -541,11 +546,11 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Delete_WhitespaceConnectionString_ThrowsArgumentException(string connectionString)
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object whereOrPrimaryKey = new();
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() => repository.Delete(whereOrPrimaryKey));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => repository.Delete(whereOrPrimaryKey));
         }
 
         /// <summary>
@@ -558,8 +563,8 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Delete_NullWhereOrPrimaryKey_RequiresIntegrationTest()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            const string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             // We expect some exception to be thrown - either from RepoDB validation
@@ -576,9 +581,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Delete_ValidPrimaryKey_RequiresIntegrationTest()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;Connection Timeout=1;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            int primaryKey = 123;
+            const string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;Connection Timeout=1;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            const int primaryKey = 123;
 
             // Act & Assert
             // We expect an exception to be thrown when attempting to connect to the non-existent database
@@ -592,13 +597,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// Expected: SqlException thrown when attempting to connect to non-existent database.
         /// </summary>
         [Fact]
-        [Obsolete]
         public void Delete_ValidWhereClause_RequiresIntegrationTest()
         {
             // Arrange
-            RepoDb.SqlServerBootstrap.Initialize();
-            string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;Connection Timeout=1;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            // RepoDb.SqlServerBootstrap.Initialize();
+            const string connectionString = "Server=localhost;Database=TestDb;Integrated Security=true;Connection Timeout=1;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereClause = new { Name = "TestName" };
 
             // Act & Assert
@@ -616,12 +620,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            string commandText = null!;
-            CommandType commandType = CommandType.Text;
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            const string commandText = null!;
+            const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteReader(commandText, commandType, null));
             Assert.Equal("commandText", exception.ParamName);
             Assert.Contains("Command text cannot be null or whitespace.", exception.Message);
@@ -635,12 +639,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string commandText = string.Empty;
-            CommandType commandType = CommandType.Text;
+            const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteReader(commandText, commandType, null));
             Assert.Equal("commandText", exception.ParamName);
             Assert.Contains("Command text cannot be null or whitespace.", exception.Message);
@@ -661,11 +665,11 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            CommandType commandType = CommandType.Text;
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteReader(whitespaceText, commandType, null));
             Assert.Equal("commandText", exception.ParamName);
             Assert.Contains("Command text cannot be null or whitespace.", exception.Message);
@@ -678,11 +682,11 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void DeleteAll_NullEntities_ThrowsArgumentNullException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
             IEnumerable<TestEntity>? entities = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => repository.DeleteAll(entities!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.DeleteAll(entities!));
             Assert.Equal("entities", exception.ParamName);
             Assert.Contains("Entities collection cannot be null.", exception.Message);
         }
@@ -693,13 +697,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// without attempting to open a database connection or execute SQL.
         /// </summary>
         [Fact]
-        [Obsolete]
         public void DeleteAll_EmptyCollection_ReturnsZero()
         {
             // Arrange
-            RepoDb.SqlServerBootstrap.Initialize();
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
-            var entities = new List<TestEntity>();
+            // RepoDb.SqlServerBootstrap.Initialize();
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
+            List<TestEntity> entities = [];
 
             // Act
             int result = repository.DeleteAll(entities);
@@ -715,13 +718,13 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteQuery_NullCommandText_ThrowsArgumentException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
-            string? commandText = null;
-            var commandType = CommandType.Text;
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
+            const string? commandText = null;
+            const CommandType commandType = CommandType.Text;
             IEnumerable<DbParameter>? parameters = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteQuery(commandText!, commandType, parameters));
 
             Assert.Equal("commandText", exception.ParamName);
@@ -735,13 +738,13 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteQuery_EmptyCommandText_ThrowsArgumentException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
             string commandText = string.Empty;
-            var commandType = CommandType.Text;
+            const CommandType commandType = CommandType.Text;
             IEnumerable<DbParameter>? parameters = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteQuery(commandText, commandType, parameters));
 
             Assert.Equal("commandText", exception.ParamName);
@@ -762,12 +765,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteQuery_WhitespaceCommandText_ThrowsArgumentException(string whitespaceText)
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
-            var commandType = CommandType.Text;
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
+            const CommandType commandType = CommandType.Text;
             IEnumerable<DbParameter>? parameters = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteQuery(whitespaceText, commandType, parameters));
 
             Assert.Equal("commandText", exception.ParamName);
@@ -782,11 +785,11 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             TestEntity? entity = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => repository.Update(entity!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.Update(entity!));
             Assert.Equal("entity", exception.ParamName);
             Assert.Contains("Entity cannot be null.", exception.Message);
         }
@@ -803,8 +806,8 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             const string connectionString = "Server=nonexistent;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entity = new TestEntity { Id = 1, Name = "Test" };
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            TestEntity entity = new() { Id = 1, Name = "Test" };
 
             // Act & Assert
             // We expect a SqlException or similar because the connection string is invalid.
@@ -823,11 +826,11 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             const string connectionString = "Server=test;Database=test;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             IEnumerable<TestEntity>? entities = null;
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() => repository.UpdateAll(entities!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.UpdateAll(entities!));
             Assert.Equal("entities", exception.ParamName);
             Assert.Contains("Entities collection cannot be null.", exception.Message);
         }
@@ -840,10 +843,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_NullCommandText_ThrowsArgumentException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteNonQuery(null!, CommandType.Text, null));
             Assert.Equal("commandText", exception.ParamName);
             Assert.Contains("Command text cannot be null or whitespace.", exception.Message);
@@ -857,10 +860,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_EmptyCommandText_ThrowsArgumentException()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteNonQuery(string.Empty, CommandType.Text, null));
             Assert.Equal("commandText", exception.ParamName);
             Assert.Contains("Command text cannot be null or whitespace.", exception.Message);
@@ -883,10 +886,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WhitespaceCommandText_ThrowsArgumentException(string commandText)
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
 
             // Act & Assert
-            var exception = Assert.Throws<ArgumentException>(() =>
+            ArgumentException exception = Assert.Throws<ArgumentException>(() =>
                 repository.ExecuteNonQuery(commandText, CommandType.Text, null));
             Assert.Equal("commandText", exception.ParamName);
             Assert.Contains("Command text cannot be null or whitespace.", exception.Message);
@@ -906,8 +909,8 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_ValidCommandTextWithDifferentCommandTypes_AcceptsCommandTypes(CommandType commandType)
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=invalid;Database=test;Connection Timeout=1;");
-            string validCommandText = "SELECT 1";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=invalid;Database=test;Connection Timeout=1;");
+            const string validCommandText = "SELECT 1";
 
             // Act & Assert
             // Note: This will throw a SqlException when attempting to connect to the invalid server,
@@ -926,8 +929,8 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_NullParameters_AcceptsNullParameters()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=invalid;Database=test;Connection Timeout=1;");
-            string validCommandText = "INSERT INTO TestTable VALUES (1)";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=invalid;Database=test;Connection Timeout=1;");
+            const string validCommandText = "INSERT INTO TestTable VALUES (1)";
 
             // Act & Assert
             // Note: Validates null parameters are accepted; actual execution requires database.
@@ -944,9 +947,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_EmptyParametersCollection_AcceptsEmptyCollection()
         {
             // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=invalid;Database=test;Connection Timeout=1;");
-            string validCommandText = "INSERT INTO TestTable VALUES (1)";
-            var emptyParameters = new List<DbParameter>();
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=invalid;Database=test;Connection Timeout=1;");
+            const string validCommandText = "INSERT INTO TestTable VALUES (1)";
+            List<DbParameter> emptyParameters = [];
 
             // Act & Assert
             // Note: Validates empty parameter collection is accepted; actual execution requires database.
@@ -964,64 +967,29 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void Merge_ValidEntity_ReturnsPrimaryKey()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entity = new TestEntity { Id = 1, Name = "Test" };
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            TestEntity entity = new() { Id = 1, Name = "Test" };
 
             // Act & Assert
             // We expect a SqlException because there's no actual database connection,
             // but this proves the validation passes and the method attempts to execute
             _ = Assert.ThrowsAny<Exception>(() => repository.Merge(entity));
         }
-    }
-}
-
-namespace Gasolutions.Core.Repository.UnitTests
-{
-    /// <summary>
-    /// Unit tests for the <see cref="WriteGenericRepositoryRepoDB{T, TKey}"/> class.
-    /// </summary>
-    public partial class WriteGenericRepoRepoDBTests
-    {
-        /// <summary>
-        /// Tests that Update throws ArgumentNullException when entity parameter is null.
-        /// Input: null entity.
-        /// Expected: ArgumentNullException with parameter name "entity" and message containing "Entity cannot be null.".
-        /// </summary>
-        [Fact]
-        public void Update_NullEntity_ThrowsArgumentNullException()
-        {
-            // Arrange
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>("Server=test;Database=test;");
-            TestEntity entity = null!;
-            SqlConnection connection = null!;
-            IDbTransaction transaction = null!;
-
-            // Act & Assert
-            var exception = Assert.Throws<ArgumentNullException>(() =>
-                repository.Update(entity, connection, transaction));
-
-            Assert.Equal("entity", exception.ParamName);
-            Assert.Contains("Entity cannot be null.", exception.Message);
-        }
 
         /// <summary>
-        /// NOTE: Additional tests for successful Update operations cannot be generated because:
-        /// 1. SqlConnection is a sealed class and cannot be mocked using Moq.
-        /// 2. The connection.Update method is a RepoDB extension method that cannot be mocked directly.
-        /// 3. Creating fake/stub implementations is prohibited by the test generation requirements.
-        ///
-        /// To fully test this method, consider:
-        /// - Integration tests with a real database connection
-        /// - Refactoring to use dependency injection with an abstraction over the data access layer.
+        /// Tests that Update returns the number of affected rows when a valid entity is provided.
+        /// This test validates that the method accepts a valid entity and attempts to execute
+        /// the update operation. Since there's no actual database connection, an exception is
+        /// expected, but this proves that the validation passes and the method attempts to execute.
         /// </summary>
         [Fact]
         public void Update_ValidEntity_ReturnsAffectedRows()
         {
             // Arrange
-            string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(connectionString);
-            var entity = new TestEntity { Id = 1, Name = "Test" };
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            TestEntity entity = new() { Id = 1, Name = "Test" };
 
             // Act & Assert
             // We expect a SqlException because there's no actual database connection,

@@ -13,19 +13,28 @@ namespace Gasolutions.Core.Repository
         where T : class
         where TKey : struct
     {
+        private readonly string connectionString;
+        private readonly Func<IDbConnection>? connectionFactory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WriteGenericRepositoryRepoDB{T, TKey}"/> class.
         /// </summary>
         /// <param name="connectionString">Connection string used to open SQL Server connections.</param>
         public WriteGenericRepositoryRepoDB(string connectionString)
         {
-            this.ConnectionString = connectionString;
+            this.connectionString = connectionString;
+            this.connectionFactory = null;
         }
 
         /// <summary>
-        /// Gets or sets the connection string used by the repository.
+        /// Initializes a new instance of the <see cref="WriteGenericRepositoryRepoDB{T, TKey}"/> class.
+        /// Initializes a new instance with a connection factory (for testing).
         /// </summary>
-        private string ConnectionString { get; set; } = string.Empty;
+        public WriteGenericRepositoryRepoDB(Func<IDbConnection> connectionFactory)
+        {
+            this.connectionFactory = connectionFactory ?? throw new ArgumentNullException(nameof(connectionFactory));
+            this.connectionString = string.Empty;
+        }
 
         /// <summary>
         /// Inserts the specified entity into the database and returns the generated primary key.
@@ -39,8 +48,8 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
-            return (TKey)connection.Insert(entity);
+            using IDbConnection connection = this.CreateConnection();
+            return (TKey)((SqlConnection)connection).Insert(entity);
         }
 
         /// <summary>
@@ -72,7 +81,8 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
+
             return connection.InsertAll(entities);
         }
 
@@ -88,7 +98,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return (TKey)connection.Merge(entity);
         }
 
@@ -110,7 +120,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(qualifiers), "Qualifiers cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return (TKey)connection.Merge(entity, qualifiers: qualifiers);
         }
 
@@ -143,7 +153,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.MergeAll(entities);
         }
 
@@ -154,7 +164,7 @@ namespace Gasolutions.Core.Repository
         /// <returns>The number of deleted rows.</returns>
         public int Delete(object whereOrPrimaryKey)
         {
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.Delete<T>(whereOrPrimaryKey);
         }
 
@@ -175,7 +185,7 @@ namespace Gasolutions.Core.Repository
                 return 0;
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.DeleteAll(entities);
         }
 
@@ -191,7 +201,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.Update(entity);
         }
 
@@ -224,7 +234,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.UpdateAll(entities);
         }
 
@@ -242,8 +252,9 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
-            using SqlCommand command = new(commandText, connection);
+            using IDbConnection connection = this.CreateConnection();
+            using IDbCommand command = connection.CreateCommand();
+            command.CommandText = commandText;
             command.CommandType = commandType;
 
             if (parameters != null)
@@ -272,7 +283,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return (TKey)connection.ExecuteScalar(commandText, parameters, commandType);
         }
 
@@ -290,7 +301,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.ExecuteReader(commandText, parameters, commandType);
         }
 
@@ -308,7 +319,7 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return connection.ExecuteQuery<T>(commandText, parameters, commandType);
         }
 
@@ -325,8 +336,15 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
+            using IDbConnection connection = this.CreateConnection();
             return (string)connection.ExecuteScalar(commandText, null, commandType);
+        }
+
+        private IDbConnection CreateConnection()
+        {
+            return this.connectionFactory != null
+                ? this.connectionFactory()
+                : new SqlConnection(this.connectionString);
         }
     }
 }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using RepoDb;
-using RepoDb.Extensions;
 
 namespace Gasolutions.Core.Repository.UnitTests
 {
@@ -28,7 +27,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             // We expect a SqlException or InvalidOperationException because there's no actual database connection,
@@ -52,7 +51,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             // We expect a SqlException or InvalidOperationException because there's no actual database connection,
@@ -69,7 +68,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             // The method should throw an exception, either from the underlying RepoDb library
@@ -86,7 +85,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             // The method should throw an exception, either from cache.Remove or from the underlying RepoDb library
@@ -106,9 +105,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object? whereOrPrimaryKey = null;
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Query(whereOrPrimaryKey!, orderBy));
@@ -126,7 +126,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1 };
             IEnumerable<OrderField>? orderBy = null;
 
@@ -146,9 +146,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1 };
-            var orderBy = new List<OrderField>();
+            List<OrderField> orderBy = new();
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Query(whereOrPrimaryKey, orderBy));
@@ -166,9 +166,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1 };
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Query(whereOrPrimaryKey, orderBy));
@@ -186,9 +187,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1 };
-            var orderBy = new List<OrderField>
+            List<OrderField> orderBy = new()
             {
                 new("Name", RepoDb.Enumerations.Order.Ascending),
                 new("Id", RepoDb.Enumerations.Order.Descending),
@@ -207,9 +208,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = string.Empty;
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1 };
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Query(whereOrPrimaryKey, orderBy));
@@ -224,9 +226,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "   ";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1 };
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Query(whereOrPrimaryKey, orderBy));
@@ -244,9 +247,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1, Name = "Test", IsActive = true };
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Query(whereOrPrimaryKey, orderBy));
@@ -262,7 +266,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object? whereOrPrimaryKey = null;
 
             // Act & Assert
@@ -281,7 +285,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object whereOrPrimaryKey = 1;
 
             // Act & Assert
@@ -298,7 +302,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereOrPrimaryKey = new { Id = 1, Name = "Test" };
 
             // Act & Assert
@@ -314,7 +318,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = string.Empty;
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object whereOrPrimaryKey = 1;
 
             // Act & Assert
@@ -336,9 +340,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereClause = new { Id = 1 };
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             // We expect an exception because there's no actual database connection,
@@ -355,9 +360,10 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object? whereClause = null;
-            var orderBy = new List<OrderField> { new("Name", RepoDb.Enumerations.Order.Ascending) };
+            List<OrderField> orderBy = new()
+            { new("Name", RepoDb.Enumerations.Order.Ascending) };
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAsync(whereClause!, orderBy));
@@ -372,7 +378,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereClause = new { Id = 1 };
             IEnumerable<OrderField>? orderBy = null;
 
@@ -389,9 +395,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereClause = new { Id = 1 };
-            var orderBy = new List<OrderField>();
+            List<OrderField> orderBy = new();
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAsync(whereClause, orderBy));
@@ -406,9 +412,9 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             var whereClause = new { Id = 1 };
-            var orderBy = new List<OrderField>
+            List<OrderField> orderBy = new()
             {
                 new("Name", RepoDb.Enumerations.Order.Ascending),
                 new("Id", RepoDb.Enumerations.Order.Descending),
@@ -427,7 +433,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             object? whereClause = null;
             IEnumerable<OrderField>? orderBy = null;
 
@@ -450,7 +456,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             // We expect a SqlException or similar because there's no actual database connection,
@@ -467,7 +473,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = string.Empty;
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAllAsync());
@@ -482,7 +488,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "   ";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAllAsync());
@@ -497,7 +503,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "InvalidConnectionString";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAllAsync());
@@ -512,7 +518,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = new('a', 10000);
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAllAsync());
@@ -528,7 +534,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=<>?*|;Database=Test;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
 
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(async () => await repository.QueryAllAsync());
@@ -549,7 +555,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = "validCacheKey";
 
             // Act & Assert
@@ -569,7 +575,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = "validCacheKey";
 
             // Act & Assert
@@ -587,7 +593,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = string.Empty;
 
             // Act & Assert
@@ -605,7 +611,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = "   ";
 
             // Act & Assert
@@ -623,7 +629,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = new('a', 10000);
 
             // Act & Assert
@@ -641,7 +647,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = "cache!@#$%^&*()_+-=[]{}|;':\",./<>?";
 
             // Act & Assert
@@ -660,7 +666,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string? cacheKey = null;
 
             // Act & Assert
@@ -681,7 +687,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string cacheKey = "testKey";
 
             // Act & Assert
@@ -704,7 +710,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = "Id";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -722,7 +728,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = null!;
             string fieldName = "Id";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -741,7 +747,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = string.Empty;
             string fieldName = "Id";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -759,7 +765,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = null!;
             var whereOrPrimaryKey = new { Id = 1 };
@@ -777,7 +783,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = string.Empty;
             var whereOrPrimaryKey = new { Id = 1 };
@@ -795,7 +801,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "   ";
             string fieldName = "Id";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -813,7 +819,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = "   ";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -832,7 +838,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = "Id";
             object whereOrPrimaryKey = null!;
@@ -850,7 +856,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "Test@Table#$%";
             string fieldName = "Id";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -868,7 +874,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = "Test@Field#$%";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -886,7 +892,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = new('T', 1000);
             string fieldName = "Id";
             var whereOrPrimaryKey = new { Id = 1 };
@@ -904,7 +910,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestTable";
             string fieldName = new('F', 1000);
             var whereOrPrimaryKey = new { Id = 1 };
@@ -912,13 +918,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             // Act & Assert
             _ = await Assert.ThrowsAnyAsync<Exception>(() => repository.MaxAsync(tableName, fieldName, whereOrPrimaryKey));
         }
-    }
 
-    /// <summary>
-    /// Unit tests for the Max method of <see cref="ReadGenericRepositoryRepoDB{T, TKey}"/> class.
-    /// </summary>
-    public partial class ReadGenericRepositoryRepoDBMaxTests
-    {
         /// <summary>
         /// Tests that Max throws an exception when tableName is null.
         /// Since the method does not validate the tableName parameter before passing it to RepoDb,
@@ -929,7 +929,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string? tableName = null;
             string fieldName = "Id";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -948,7 +948,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string? fieldName = null;
             object whereOrPrimaryKey = new { Id = 1 };
@@ -966,7 +966,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = string.Empty;
             string fieldName = "Id";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -984,7 +984,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string fieldName = string.Empty;
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1002,7 +1002,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "   ";
             string fieldName = "Id";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1020,7 +1020,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string fieldName = "   ";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1038,7 +1038,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string fieldName = "Id";
             object? whereOrPrimaryKey = null;
@@ -1063,7 +1063,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string fieldName = "Id";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1083,7 +1083,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "Test@Table#$%";
             string fieldName = "Id";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1101,7 +1101,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string fieldName = "Test@Field#$%";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1119,7 +1119,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = new('T', 1000);
             string fieldName = "Id";
             object whereOrPrimaryKey = new { Id = 1 };
@@ -1137,7 +1137,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             string connectionString = "Server=localhost;Database=TestDb;";
-            var repository = new ReadGenericRepositoryRepoDB<TestEntity, int>(connectionString);
+            ReadGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string tableName = "TestEntity";
             string fieldName = new('F', 1000);
             object whereOrPrimaryKey = new { Id = 1 };
