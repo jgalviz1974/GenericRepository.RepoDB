@@ -9,7 +9,6 @@ namespace Gasolutions.Core.Repository
     /// </summary>
     /// <typeparam name="T">Entity type handled by the repository.</typeparam>
     /// <typeparam name="TKey">Primary key type returned by insert/merge operations.</typeparam>
-    [ExcludeFromCodeCoverage]
     public class WriteGenericRepositoryRepoDB<T, TKey> : IWriteGenericRepository<T, TKey>
         where T : class
         where TKey : struct
@@ -168,7 +167,12 @@ namespace Gasolutions.Core.Repository
         {
             if (entities == null)
             {
-                throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
+                throw new ArgumentNullException("Entities collection cannot be null.", nameof(entities));
+            }
+
+            if (!entities.Any())
+            {
+                return 0;
             }
 
             using SqlConnection connection = new(this.ConnectionString);

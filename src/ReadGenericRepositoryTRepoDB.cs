@@ -9,7 +9,6 @@ namespace Gasolutions.Core.Repository
     /// </summary>
     /// <typeparam name="T">Entity type returned by queries.</typeparam>
     /// <typeparam name="TKey">Primary key type used for scalar operations.</typeparam>
-    [ExcludeFromCodeCoverage]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:FileNameMustMatchTypeName", Justification = "Reviewed.")]
     public class ReadGenericRepositoryRepoDB<T, TKey> : IReadGenericRepository<T, TKey>
         where T : class

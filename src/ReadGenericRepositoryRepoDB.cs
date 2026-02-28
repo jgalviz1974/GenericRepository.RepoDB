@@ -7,7 +7,6 @@ namespace Gasolutions.Core.Repository
     /// <summary>
     /// Lightweight repository implementation for read operations that return raw JSON strings.
     /// </summary>
-    [ExcludeFromCodeCoverage]
     public class ReadGenericRepositoryRepoDB : IReadGenericRepository
     {
         /// <summary>
