@@ -167,7 +167,7 @@ namespace Gasolutions.Core.Repository
         {
             if (entities == null)
             {
-                throw new ArgumentNullException("Entities collection cannot be null.", nameof(entities));
+                throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
             }
 
             if (!entities.Any())
