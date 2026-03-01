@@ -239,6 +239,12 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
             }
 
+            // Early return for empty collections to avoid unnecessary database connection
+            if (!entities.Any())
+            {
+                return 0;
+            }
+
             using IDbConnection connection = this.CreateConnection();
             return connection.UpdateAll(entities);
         }

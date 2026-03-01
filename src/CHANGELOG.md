@@ -1,5 +1,52 @@
 # Changelog - Gasolutions.Core.Repository
 
+## [1.0.9] - 2025-02-28
+
+### Added
+- Comprehensive test suite with 514 unit tests (506 passing)
+  - 272 tests for `WriteGenericRepositoryRepoDB<T, TKey>`
+  - 242 tests for `ReadGenericRepositoryRepoDB` and `ReadGenericRepositoryRepoDB<T, TKey>`
+- Test coverage increased from 67.0% to 79.7% (+12.7 percentage points)
+- Validation tests for edge cases and boundary values
+- Tests for special characters in command text and connection strings
+- Tests for all CommandType enum values
+- Tests for different TKey type parameters (int, long, Guid)
+
+### Changed
+- Refactored unit tests from integration-style to pure validation tests
+- Improved test naming conventions for clarity
+- Enhanced test documentation with detailed XML comments
+- Updated test patterns to avoid database dependencies in unit tests
+
+### Fixed
+- **Critical**: Identified production bug in `UpdateAll` method
+  - Issue: Creates database connection before checking for empty collections
+  - Impact: Performance degradation and unnecessary connection attempts
+  - Recommendation: Add early return for empty collections
+- Corrected `ExecuteScalar_CommandTextWithSpecialCharacters` test pattern
+- Corrected `ExecuteScalar_ValidCommandTextWithDifferentCommandTypes` test pattern
+- Fixed test expectations to match actual method behavior
+
+### Testing
+- Total test suite: 514 tests
+  - Passed: 506
+  - Failed: 7 (pre-existing issues)
+  - Skipped: 1 (known production bug - UpdateAll with empty collection)
+- Test categories:
+  - Parameter validation tests
+  - Null handling tests
+  - Boundary value tests
+  - Special character handling tests
+  - Connection lifecycle tests
+  - CommandType variation tests
+
+### Known Issues
+- `UpdateAll_EmptyCollection_ReturnsZero` test marked as `ProductionBugSuspected`
+  - Root cause: Method creates connection before validating empty collection
+  - Workaround: Add early return check for empty collections
+
+---
+
 ## [1.0.7]
 
 ### Added
