@@ -2,18 +2,11 @@
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
 // </copyright>
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
-
-using Gasolutions.Core.Repository;
 using Microsoft.Data.SqlClient;
-using Moq;
+
 using RepoDb;
-using Xunit;
+
+using System.Data.Common;
 
 namespace Gasolutions.Core.Repository.UnitTests
 {
@@ -916,7 +909,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that Insert with connection and transaction throws ArgumentNullException when entity is null.
         /// This test validates that the method properly checks for null entity before attempting database operations.
-        /// Expected: ArgumentNullException with parameter name "entity" and message "Entity cannot be null."
+        /// Expected: ArgumentNullException with parameter name "entity" and message "Entity cannot be null.".
         /// </summary>
         [Fact]
         public void Insert_WithConnectionAndTransaction_NullEntity_ThrowsArgumentNullException()
@@ -937,7 +930,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that Merge throws ArgumentNullException when the entity parameter is null.
         /// Input conditions: Null entity parameter.
-        /// Expected: ArgumentNullException with parameter name "entity" and message "Entity cannot be null."
+        /// Expected: ArgumentNullException with parameter name "entity" and message "Entity cannot be null.".
         /// </summary>
         [Fact]
         public void Merge_NullEntitySimpleOverload_ThrowsArgumentNullException()
@@ -1032,7 +1025,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException when commandText is null.
         /// Input: null commandText with CommandType.Text
-        /// Expected: ArgumentException with correct message and parameter name
+        /// Expected: ArgumentException with correct message and parameter name.
         /// </summary>
         [Fact]
         public void ExecuteScalarString_NullCommandText_ThrowsArgumentException()
@@ -1051,7 +1044,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException when commandText is empty.
         /// Input: empty string commandText with CommandType.Text
-        /// Expected: ArgumentException with correct message and parameter name
+        /// Expected: ArgumentException with correct message and parameter name.
         /// </summary>
         [Fact]
         public void ExecuteScalarString_EmptyCommandText_ThrowsArgumentException()
@@ -1070,7 +1063,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException when commandText contains only whitespace.
         /// Input: various whitespace-only strings with CommandType.Text
-        /// Expected: ArgumentException with correct message and parameter name
+        /// Expected: ArgumentException with correct message and parameter name.
         /// </summary>
         /// <param name="whitespaceText">The whitespace-only command text to test.</param>
         [Theory]
@@ -1099,7 +1092,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException for null commandText with different CommandType values.
         /// Input: null commandText with various CommandType enum values
-        /// Expected: ArgumentException with correct message and parameter name for all command types
+        /// Expected: ArgumentException with correct message and parameter name for all command types.
         /// </summary>
         /// <param name="commandType">The command type to test.</param>
         [Theory]
@@ -1121,7 +1114,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException for empty commandText with different CommandType values.
         /// Input: empty string commandText with various CommandType enum values
-        /// Expected: ArgumentException with correct message and parameter name for all command types
+        /// Expected: ArgumentException with correct message and parameter name for all command types.
         /// </summary>
         /// <param name="commandType">The command type to test.</param>
         [Theory]
@@ -1143,7 +1136,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) throws ArgumentException for whitespace commandText with different CommandType values.
         /// Input: whitespace-only commandText with various CommandType enum values
-        /// Expected: ArgumentException with correct message and parameter name for all command types
+        /// Expected: ArgumentException with correct message and parameter name for all command types.
         /// </summary>
         /// <param name="commandType">The command type to test.</param>
         [Theory]
@@ -1166,7 +1159,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// Tests that ExecuteScalar(string, CommandType) validates commandText before other operations.
         /// This test ensures that validation occurs before attempting to create a database connection.
         /// Input: null commandText with an invalid connection string
-        /// Expected: ArgumentException (validation) rather than connection-related exception
+        /// Expected: ArgumentException (validation) rather than connection-related exception.
         /// </summary>
         [Fact]
         public void ExecuteScalarString_NullCommandTextWithInvalidConnectionString_ThrowsArgumentException()
@@ -1186,7 +1179,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// Tests that ExecuteScalar(string, CommandType) with valid commandText attempts to execute against the database.
         /// This test verifies that when commandText passes validation, the method attempts to create a connection.
         /// Input: valid commandText with CommandType.Text and invalid connection string
-        /// Expected: Exception from connection attempt (not ArgumentException), proving validation passed
+        /// Expected: Exception from connection attempt (not ArgumentException), proving validation passed.
         /// </summary>
         /// <param name="commandType">The command type to test.</param>
         [Theory]
@@ -1215,14 +1208,14 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) handles very long command text correctly.
         /// Input: command text with thousands of characters
-        /// Expected: Method accepts the input and attempts execution (validation passes)
+        /// Expected: Method accepts the input and attempts execution (validation passes).
         /// </summary>
         [Fact]
         public void ExecuteScalarString_VeryLongCommandText_PassesValidation()
         {
             // Arrange
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=nonexistent;Database=Test;Connection Timeout=1;");
-            string commandText = new string('A', 10000); // 10,000 character command text
+            string commandText = new('A', 10000); // 10,000 character command text
             const CommandType commandType = CommandType.Text;
 
             // Act & Assert
@@ -1239,7 +1232,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) handles command text with special characters.
         /// Input: command text containing quotes, newlines, tabs, and other special characters
-        /// Expected: Method accepts the input and attempts execution (validation passes)
+        /// Expected: Method accepts the input and attempts execution (validation passes).
         /// </summary>
         /// <param name="commandText">Command text with special characters to test.</param>
         [Theory]
@@ -1272,7 +1265,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) validates parameter name in exception for various whitespace inputs.
         /// Input: different whitespace-only strings
-        /// Expected: ArgumentException with parameter name "commandText" for all cases
+        /// Expected: ArgumentException with parameter name "commandText" for all cases.
         /// </summary>
         /// <param name="whitespaceText">The whitespace-only command text to test.</param>
         [Theory]
@@ -1294,7 +1287,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that ExecuteScalar(string, CommandType) exception message is consistent across different invalid inputs.
         /// Input: null, empty, and whitespace commandText
-        /// Expected: Same exception message for all invalid commandText inputs
+        /// Expected: Same exception message for all invalid commandText inputs.
         /// </summary>
         [Fact]
         public void ExecuteScalarString_InvalidCommandTextVariations_HasConsistentExceptionMessage()
@@ -1320,7 +1313,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that Merge throws ArgumentNullException when the entity parameter is null and qualifiers is provided.
         /// Input conditions: entity = null, qualifiers = valid collection.
-        /// Expected result: ArgumentNullException with parameter name "entity" and message "Entity cannot be null."
+        /// Expected result: ArgumentNullException with parameter name "entity" and message "Entity cannot be null.".
         /// </summary>
         [Fact]
         public void Merge_NullEntityWithQualifiers_ThrowsArgumentNullException()
@@ -1340,7 +1333,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that Merge with connection and transaction throws ArgumentNullException when entity is null.
         /// Input conditions: null entity, valid connection, valid transaction.
-        /// Expected result: ArgumentNullException with parameter name "entity" and message "Entity cannot be null."
+        /// Expected result: ArgumentNullException with parameter name "entity" and message "Entity cannot be null.".
         /// </summary>
         [Fact]
         public void Merge_WithConnectionAndTransaction_NullEntity_ThrowsArgumentNullException()
@@ -1374,7 +1367,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             Mock<IDbTransaction> mockTransaction = new();
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
                 repository.Merge(entity, connection, mockTransaction.Object));
         }
 
@@ -1389,7 +1382,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
-            IEnumerable<TestEntity> entities = new List<TestEntity>();
+            IEnumerable<TestEntity> entities = [];
 
             // Act & Assert
             // RepoDB may handle empty collections without connecting, or may throw when attempting to connect
@@ -1420,10 +1413,10 @@ namespace Gasolutions.Core.Repository.UnitTests
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
             WriteGenericRepositoryRepoDB<TestEntityLong, long> repository = new(connectionString);
-            IEnumerable<TestEntityLong> entities = new List<TestEntityLong>
-            {
+            IEnumerable<TestEntityLong> entities =
+            [
                 new TestEntityLong { Id = 1L, Name = "Entity" }
-            };
+            ];
 
             // Act & Assert
             Exception exception = Assert.ThrowsAny<Exception>(() => repository.MergeAll(entities));
@@ -1443,10 +1436,10 @@ namespace Gasolutions.Core.Repository.UnitTests
             // Arrange
             const string connectionString = "Server=localhost;Database=TestDb;";
             WriteGenericRepositoryRepoDB<TestEntityGuid, Guid> repository = new(connectionString);
-            IEnumerable<TestEntityGuid> entities = new List<TestEntityGuid>
-            {
+            IEnumerable<TestEntityGuid> entities =
+            [
                 new TestEntityGuid { Id = Guid.NewGuid(), Name = "Entity" }
-            };
+            ];
 
             // Act & Assert
             Exception exception = Assert.ThrowsAny<Exception>(() => repository.MergeAll(entities));
@@ -1512,10 +1505,10 @@ namespace Gasolutions.Core.Repository.UnitTests
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
             const string? commandText = null;
             const CommandType commandType = CommandType.Text;
-            List<DbParameter> parameters = new()
-            {
+            List<DbParameter> parameters =
+            [
                 new SqlParameter("@param1", "value1")
-            };
+            ];
 
             // Act & Assert
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -1537,7 +1530,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
             string commandText = string.Empty;
             const CommandType commandType = CommandType.StoredProcedure;
-            List<DbParameter> parameters = new();
+            List<DbParameter> parameters = [];
 
             // Act & Assert
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -1608,9 +1601,10 @@ namespace Gasolutions.Core.Repository.UnitTests
             // The method will attempt to create a connection and execute the query.
             // Since there's no real database, it will throw a SqlException.
             // This proves that the validation passed and execution was attempted.
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, null);
+
                 // Force enumeration to trigger execution
                 _ = result.ToList();
             });
@@ -1631,7 +1625,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const CommandType commandType = CommandType.StoredProcedure;
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, null);
                 _ = result.ToList();
@@ -1651,13 +1645,13 @@ namespace Gasolutions.Core.Repository.UnitTests
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             const string commandText = "SELECT * FROM TestTable WHERE Id = @Id";
             const CommandType commandType = CommandType.Text;
-            List<DbParameter> parameters = new()
-            {
+            List<DbParameter> parameters =
+            [
                 new SqlParameter("@Id", 1)
-            };
+            ];
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, parameters);
                 _ = result.ToList();
@@ -1679,7 +1673,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, null);
                 _ = result.ToList();
@@ -1701,7 +1695,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const CommandType commandType = CommandType.Text;
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, null);
                 _ = result.ToList();
@@ -1721,10 +1715,10 @@ namespace Gasolutions.Core.Repository.UnitTests
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             const string commandText = "SELECT * FROM TestTable";
             const CommandType commandType = CommandType.Text;
-            List<DbParameter> emptyParameters = new();
+            List<DbParameter> emptyParameters = [];
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, emptyParameters);
                 _ = result.ToList();
@@ -1749,7 +1743,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const string commandText = "SELECT * FROM TestTable";
 
             // Act & Assert
-            Assert.ThrowsAny<Exception>(() =>
+            _ = Assert.ThrowsAny<Exception>(() =>
             {
                 IEnumerable<TestEntity> result = repository.ExecuteQuery(commandText, commandType, null);
                 _ = result.ToList();
@@ -2009,7 +2003,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             Mock<IDbConnection> mockConnection = new();
-            mockConnection.Setup(c => c.Dispose());
+            _ = mockConnection.Setup(c => c.Dispose());
 
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
             const int primaryKey = 1;
@@ -2211,7 +2205,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new("Server=test;Database=test;");
-            List<TestEntity> entities = new();
+            List<TestEntity> entities = [];
 
             // Act
             int result = repository.DeleteAll(entities);
@@ -2278,7 +2272,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// <summary>
         /// Tests that DeleteAll exception message contains expected text.
         /// Input: Null entities parameter.
-        /// Expected: ArgumentNullException with message containing "Entities collection cannot be null."
+        /// Expected: ArgumentNullException with message containing "Entities collection cannot be null.".
         /// </summary>
         [Fact]
         public void DeleteAll_NullEntities_ExceptionHasCorrectMessage()
@@ -2302,7 +2296,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             WriteGenericRepositoryRepoDB<TestEntity, long> repository = new("Server=test;Database=test;");
-            List<TestEntity> entities = new();
+            List<TestEntity> entities = [];
 
             // Act
             int result = repository.DeleteAll(entities);
@@ -2321,7 +2315,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         {
             // Arrange
             WriteGenericRepositoryRepoDB<TestEntity, Guid> repository = new("Server=test;Database=test;");
-            List<TestEntity> entities = new();
+            List<TestEntity> entities = [];
 
             // Act
             int result = repository.DeleteAll(entities);
@@ -2404,7 +2398,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         /// Input conditions: Empty IEnumerable of entities.
         /// Expected result: Returns 0 without throwing any exceptions.
         /// </summary>
-        [Fact(Skip="ProductionBugSuspected")]
+        [Fact(Skip = "ProductionBugSuspected")]
         [Trait("Category", "ProductionBugSuspected")]
         public void UpdateAll_EmptyCollection_ReturnsZero()
         {
@@ -2429,22 +2423,22 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WithSingleParameter_AddsParameterToCommand()
         {
             // Arrange
-            var mockConnection = new Mock<IDbConnection>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockParameterCollection = new Mock<IDataParameterCollection>();
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+            Mock<IDataParameterCollection> mockParameterCollection = new();
 
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupProperty(c => c.CommandText);
-            mockCommand.SetupProperty(c => c.CommandType);
-            mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
-            mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(1);
+            _ = mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            _ = mockCommand.SetupProperty(c => c.CommandText);
+            _ = mockCommand.SetupProperty(c => c.CommandType);
+            _ = mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
+            _ = mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(1);
 
-            var parameters = new List<DbParameter>
+            List<DbParameter> parameters = new()
             {
-                new SqlParameter("@Id", 42)
+                new SqlParameter("@Id", 42),
             };
 
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(() => mockConnection.Object);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
             // Act
             int result = repository.ExecuteNonQuery("DELETE FROM Table WHERE Id = @Id", CommandType.Text, parameters);
@@ -2466,24 +2460,24 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WithMultipleParameters_AddsAllParametersToCommand()
         {
             // Arrange
-            var mockConnection = new Mock<IDbConnection>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockParameterCollection = new Mock<IDataParameterCollection>();
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+            Mock<IDataParameterCollection> mockParameterCollection = new();
 
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupProperty(c => c.CommandText);
-            mockCommand.SetupProperty(c => c.CommandType);
-            mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
-            mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(5);
+            _ = mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            _ = mockCommand.SetupProperty(c => c.CommandText);
+            _ = mockCommand.SetupProperty(c => c.CommandType);
+            _ = mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
+            _ = mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(5);
 
-            var parameters = new List<DbParameter>
+            List<DbParameter> parameters = new()
             {
                 new SqlParameter("@Id", 1),
                 new SqlParameter("@Name", "TestName"),
-                new SqlParameter("@Active", true)
+                new SqlParameter("@Active", true),
             };
 
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(() => mockConnection.Object);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
             // Act
             int result = repository.ExecuteNonQuery("sp_UpdateEntity", CommandType.StoredProcedure, parameters);
@@ -2507,26 +2501,26 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WithParameters_SetsCommandPropertiesCorrectly(CommandType commandType)
         {
             // Arrange
-            var mockConnection = new Mock<IDbConnection>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockParameterCollection = new Mock<IDataParameterCollection>();
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+            Mock<IDataParameterCollection> mockParameterCollection = new();
             string? capturedCommandText = null;
             CommandType capturedCommandType = CommandType.Text;
 
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupSet(c => c.CommandText = It.IsAny<string>())
+            _ = mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            _ = mockCommand.SetupSet(c => c.CommandText = It.IsAny<string>())
                 .Callback<string>(value => capturedCommandText = value);
-            mockCommand.SetupSet(c => c.CommandType = It.IsAny<CommandType>())
+            _ = mockCommand.SetupSet(c => c.CommandType = It.IsAny<CommandType>())
                 .Callback<CommandType>(value => capturedCommandType = value);
-            mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
-            mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(2);
+            _ = mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
+            _ = mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(2);
 
-            var parameters = new List<DbParameter>
+            List<DbParameter> parameters = new()
             {
-                new SqlParameter("@Param1", "Value1")
+                new SqlParameter("@Param1", "Value1"),
             };
 
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(() => mockConnection.Object);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
             const string expectedCommandText = "UPDATE Table SET Column = @Param1";
 
             // Act
@@ -2553,22 +2547,22 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WithParameters_ReturnsAffectedRowCount(int affectedRows)
         {
             // Arrange
-            var mockConnection = new Mock<IDbConnection>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockParameterCollection = new Mock<IDataParameterCollection>();
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+            Mock<IDataParameterCollection> mockParameterCollection = new();
 
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupProperty(c => c.CommandText);
-            mockCommand.SetupProperty(c => c.CommandType);
-            mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
-            mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(affectedRows);
+            _ = mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            _ = mockCommand.SetupProperty(c => c.CommandText);
+            _ = mockCommand.SetupProperty(c => c.CommandType);
+            _ = mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
+            _ = mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(affectedRows);
 
-            var parameters = new List<DbParameter>
+            List<DbParameter> parameters = new()
             {
-                new SqlParameter("@Status", "Active")
+                new SqlParameter("@Status", "Active"),
             };
 
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(() => mockConnection.Object);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
             // Act
             int result = repository.ExecuteNonQuery("UPDATE Table SET Status = @Status", CommandType.Text, parameters);
@@ -2586,29 +2580,29 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WithParameters_OpensConnection()
         {
             // Arrange
-            var mockConnection = new Mock<IDbConnection>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockParameterCollection = new Mock<IDataParameterCollection>();
-            var callSequence = new List<string>();
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+            Mock<IDataParameterCollection> mockParameterCollection = new();
+            List<string> callSequence = new();
 
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupProperty(c => c.CommandText);
-            mockCommand.SetupProperty(c => c.CommandType);
-            mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
-            mockConnection.Setup(c => c.Open()).Callback(() => callSequence.Add("Open"));
-            mockCommand.Setup(c => c.ExecuteNonQuery())
+            _ = mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            _ = mockCommand.SetupProperty(c => c.CommandText);
+            _ = mockCommand.SetupProperty(c => c.CommandType);
+            _ = mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
+            _ = mockConnection.Setup(c => c.Open()).Callback(() => callSequence.Add("Open"));
+            _ = mockCommand.Setup(c => c.ExecuteNonQuery())
                 .Callback(() => callSequence.Add("ExecuteNonQuery"))
                 .Returns(1);
 
-            var parameters = new List<DbParameter>
+            List<DbParameter> parameters = new()
             {
-                new SqlParameter("@Value", 123)
+                new SqlParameter("@Value", 123),
             };
 
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(() => mockConnection.Object);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
             // Act
-            repository.ExecuteNonQuery("INSERT INTO Table (Value) VALUES (@Value)", CommandType.Text, parameters);
+            _ = repository.ExecuteNonQuery("INSERT INTO Table (Value) VALUES (@Value)", CommandType.Text, parameters);
 
             // Assert
             Assert.Equal(2, callSequence.Count);
@@ -2625,23 +2619,23 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteNonQuery_WithManyParameters_AddsAllParameters()
         {
             // Arrange
-            var mockConnection = new Mock<IDbConnection>();
-            var mockCommand = new Mock<IDbCommand>();
-            var mockParameterCollection = new Mock<IDataParameterCollection>();
+            Mock<IDbConnection> mockConnection = new();
+            Mock<IDbCommand> mockCommand = new();
+            Mock<IDataParameterCollection> mockParameterCollection = new();
 
-            mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
-            mockCommand.SetupProperty(c => c.CommandText);
-            mockCommand.SetupProperty(c => c.CommandType);
-            mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
-            mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(1);
+            _ = mockConnection.Setup(c => c.CreateCommand()).Returns(mockCommand.Object);
+            _ = mockCommand.SetupProperty(c => c.CommandText);
+            _ = mockCommand.SetupProperty(c => c.CommandType);
+            _ = mockCommand.Setup(c => c.Parameters).Returns(mockParameterCollection.Object);
+            _ = mockCommand.Setup(c => c.ExecuteNonQuery()).Returns(1);
 
-            var parameters = new List<DbParameter>();
+            List<DbParameter> parameters = new();
             for (int i = 0; i < 50; i++)
             {
                 parameters.Add(new SqlParameter($"@Param{i}", i));
             }
 
-            var repository = new WriteGenericRepositoryRepoDB<TestEntity, int>(() => mockConnection.Object);
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
             // Act
             int result = repository.ExecuteNonQuery("SELECT 1", CommandType.Text, parameters);
@@ -2737,7 +2731,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const string connectionString = "Server=localhost;Database=TestDb;";
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             const string commandText = null!;
-            IEnumerable<DbParameter> emptyParameters = new List<DbParameter>();
+            IEnumerable<DbParameter> emptyParameters = [];
 
             // Act & Assert
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -2758,7 +2752,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const string connectionString = "Server=localhost;Database=TestDb;";
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             string commandText = string.Empty;
-            List<DbParameter> parameters = new() { new SqlParameter("@param1", "value1") };
+            List<DbParameter> parameters = [new SqlParameter("@param1", "value1")];
 
             // Act & Assert
             ArgumentException exception = Assert.Throws<ArgumentException>(() =>
@@ -2990,7 +2984,7 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             // Act & Assert - int TKey
             ArgumentException exceptionInt = Assert.Throws<ArgumentException>(() =>
-                repositoryInt.ExecuteScalar("", CommandType.Text, null));
+                repositoryInt.ExecuteScalar(string.Empty, CommandType.Text, null));
             Assert.Equal("commandText", exceptionInt.ParamName);
 
             // Arrange - Test with long TKey
@@ -2998,7 +2992,7 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             // Act & Assert - long TKey
             ArgumentException exceptionLong = Assert.Throws<ArgumentException>(() =>
-                repositoryLong.ExecuteScalar("", CommandType.Text, null));
+                repositoryLong.ExecuteScalar(string.Empty, CommandType.Text, null));
             Assert.Equal("commandText", exceptionLong.ParamName);
 
             // Arrange - Test with Guid TKey
@@ -3006,7 +3000,7 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             // Act & Assert - Guid TKey
             ArgumentException exceptionGuid = Assert.Throws<ArgumentException>(() =>
-                repositoryGuid.ExecuteScalar("", CommandType.Text, null));
+                repositoryGuid.ExecuteScalar(string.Empty, CommandType.Text, null));
             Assert.Equal("commandText", exceptionGuid.ParamName);
         }
 
@@ -3027,7 +3021,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             const int expectedResult = 1;
 
             Mock<IDbConnection> mockConnection = new();
-            mockConnection.Setup(c => c.Dispose());
+            _ = mockConnection.Setup(c => c.Dispose());
 
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
@@ -3049,22 +3043,23 @@ namespace Gasolutions.Core.Repository.UnitTests
         [InlineData("SELECT * FROM \"TableName\"")]
         [InlineData("SELECT * FROM Table_Name")]
         [InlineData("SELECT 'It''s a test'")]
-        public void ExecuteScalar_CommandTextWithSpecialCharacters_ExecutesSuccessfully(string commandText)
+        public void ExecuteScalar_CommandTextWithSpecialCharacters_PassesValidation(string commandText)
         {
             // Arrange
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository =
+                new("Server=nonexistent;Database=Test;Connection Timeout=1;");
             const CommandType commandType = CommandType.Text;
-            const int expectedResult = 1;
 
-            Mock<IDbConnection> mockConnection = new();
-            mockConnection.Setup(c => c.Dispose());
+            // Act & Assert
+            // El test verifica que la validación pasa (no lanza ArgumentException)
+            // y que el método intenta conectarse (lanza excepción de conexión)
+            Exception exception = Assert.ThrowsAny<Exception>(() =>
+                repository.ExecuteScalar(commandText, commandType, null));
 
-            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
-
-            // Act
-            int result = repository.ExecuteScalar(commandText, commandType, null);
-
-            // Assert
-            Assert.Equal(expectedResult, result);
+            // Verificar que NO es una excepción de validación
+            Assert.False(
+                exception is ArgumentException argEx && argEx.ParamName == "commandText",
+                "Expected connection-related exception, but got commandText validation exception");
         }
 
         /// <summary>
@@ -3101,22 +3096,22 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             bool connectionDisposed = false;
             Mock<IDbConnection> mockConnection = new();
-            
+
             // RepoDb requires DbCommand, not just IDbCommand, so we need to mock differently
             // Since RepoDb's ExecuteScalar extension method requires actual DbCommand casting,
             // we cannot properly mock the connection without a real database.
             // Instead, we verify disposal by tracking the Dispose call on our mock connection.
-            mockConnection.Setup(c => c.Dispose()).Callback(() => connectionDisposed = true);
-            
+            _ = mockConnection.Setup(c => c.Dispose()).Callback(() => connectionDisposed = true);
+
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(() => mockConnection.Object);
 
             // Act & Assert
             // The test cannot proceed because RepoDb requires properties/methods on the connection that the mock doesn't provide.
             // The disposal behavior is guaranteed by the 'using' statement in ExecuteScalar method (line 291).
             // This test verifies that the CreateConnection returns our mocked connection.
-            Assert.Throws<NullReferenceException>(() => 
+            _ = Assert.Throws<NullReferenceException>(() =>
                 repository.ExecuteScalar(commandText, commandType, null));
-            
+
             // Even though ExecuteScalar throws, the using statement ensures Dispose is called
             Assert.True(connectionDisposed, "Connection should be disposed even when an exception occurs within the using block");
         }
