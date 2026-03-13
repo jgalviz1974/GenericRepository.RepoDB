@@ -172,6 +172,9 @@
             <param name="entities">Collection of entities to insert.</param>
             <returns>The number of inserted rows.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.BulkInsert(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{RepoDb.BulkInsertMapItem},Microsoft.Data.SqlClient.SqlBulkCopyOptions,System.String,System.Nullable{System.Int32},System.Boolean,System.Boolean,Microsoft.Data.SqlClient.SqlTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0)">
             <summary>
             Merges (upserts) the specified entity and returns the primary key.

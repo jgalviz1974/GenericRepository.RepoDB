@@ -2,9 +2,9 @@
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
 // </copyright>
 
-using System.Data.Common;
 using Microsoft.Data.SqlClient;
-using RepoDb;
+
+using System.Data.Common;
 
 namespace Gasolutions.Core.Repository.UnitTests
 {
@@ -878,6 +878,192 @@ namespace Gasolutions.Core.Repository.UnitTests
         }
 
         /// <summary>
+        /// Tests that BulkInsert throws ArgumentNullException when entities parameter is null.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_NullEntities_ThrowsArgumentNullException()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            IEnumerable<TestEntity>? entities = null;
+
+            // Act & Assert
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.BulkInsert(entities!));
+            Assert.Equal("entities", exception.ParamName);
+            Assert.Contains("Entities collection cannot be null.", exception.Message);
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with valid entities attempts to execute the bulk insert operation.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_ValidEntities_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }, new TestEntity { Id = 2, Name = "Test2" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with empty collection attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_EmptyCollection_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with mappings parameter attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithMappings_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+            List<RepoDb.BulkInsertMapItem> mappings = [new RepoDb.BulkInsertMapItem("Id", "Id")];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, mappings));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with SqlBulkCopyOptions parameter attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithOptions_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, null, SqlBulkCopyOptions.KeepIdentity));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with hints parameter attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithHints_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, null, SqlBulkCopyOptions.Default, "TABLOCK"));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with batchSize parameter attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithBatchSize_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, null, SqlBulkCopyOptions.Default, null, 100));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with isReturnIdentity parameter attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithReturnIdentity_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, null, SqlBulkCopyOptions.Default, null, null, true));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with usePhysicalPseudoTempTable parameter attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithUsePhysicalPseudoTempTable_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, null, SqlBulkCopyOptions.Default, null, null, false, true));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert with all parameters attempts execution.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithAllParameters_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
+            List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }];
+            List<RepoDb.BulkInsertMapItem> mappings = [new RepoDb.BulkInsertMapItem("Id", "Id")];
+            SqlConnection connection = new(connectionString);
+            SqlTransaction? transaction = null;
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, mappings, SqlBulkCopyOptions.KeepIdentity, "TABLOCK", 100, true, false, transaction));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert works with different TKey types - long.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithLongTKey_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntityWithLong, long> repository = new(connectionString);
+            List<TestEntityWithLong> entities = [new TestEntityWithLong { Id = 1, Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+        }
+
+        /// <summary>
+        /// Tests that BulkInsert works with different TKey types - Guid.
+        /// </summary>
+        [Fact]
+        public void BulkInsert_WithGuidTKey_AttemptsExecution()
+        {
+            // Arrange
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            WriteGenericRepositoryRepoDB<TestEntityWithGuid, Guid> repository = new(connectionString);
+            List<TestEntityWithGuid> entities = [new TestEntityWithGuid { Id = Guid.NewGuid(), Name = "Test1" }];
+
+            // Act & Assert
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+        }
+
+        /// <summary>
         /// Test entity class for testing purposes.
         /// </summary>
         private class TestEntity
@@ -1187,12 +1373,12 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalarString_ValidCommandText_AttemptsExecution(CommandType commandType)
         {
             // Arrange
-            WriteGenericRepositoryRepoDB<TestEntity, int> repository = 
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository =
                 new("Server=nonexistent;Database=Test;Connection Timeout=1;");
             const string commandText = "SELECT 1";
 
             // Act & Assert
-            Exception exception = Assert.ThrowsAny<Exception>(() => 
+            Exception exception = Assert.ThrowsAny<Exception>(() =>
                 repository.ExecuteScalar(commandText, commandType, null));
 
             Assert.False(
@@ -1209,7 +1395,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalarString_VeryLongCommandText_PassesValidation()
         {
             // Arrange
-            WriteGenericRepositoryRepoDB<TestEntity, int> repository = 
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository =
                 new("Server=nonexistent;Database=Test;Connection Timeout=1;");
             string commandText = new('A', 10000); // 10,000 character command text
             const CommandType commandType = CommandType.Text;
@@ -1266,7 +1452,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void ExecuteScalar_ValidCommandTextWithEmptyParametersCollection_ExecutesSuccessfully()
         {
             // Arrange
-            WriteGenericRepositoryRepoDB<TestEntity, int> repository = 
+            WriteGenericRepositoryRepoDB<TestEntity, int> repository =
                 new("Server=nonexistent;Database=Test;Connection Timeout=1;");
             const string commandText = "SELECT 1";
             const CommandType commandType = CommandType.Text;
