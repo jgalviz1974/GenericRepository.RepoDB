@@ -1,7 +1,6 @@
 ﻿// <copyright file="WriteGenericRepositoryRepoDB.cs" company="Gasolutions SAS">
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
 // </copyright>
-
 namespace Gasolutions.Core.Repository
 {
     /// <summary>
@@ -84,6 +83,21 @@ namespace Gasolutions.Core.Repository
             using IDbConnection connection = this.CreateConnection();
 
             return connection.InsertAll(entities);
+        }
+
+        /// <inheritdoc/>
+        public TKey BulkInsert(IEnumerable<T> entities, IEnumerable<BulkInsertMapItem>? mappings = null, SqlBulkCopyOptions options = SqlBulkCopyOptions.Default, string? hints = null, int? batchSize = null, bool isReturnIdentity = false, bool usePhysicalPseudoTempTable = false, SqlTransaction? transaction = null)
+        {
+            if (entities == null)
+            {
+                throw new ArgumentNullException(nameof(entities), "Entities collection cannot be null.");
+            }
+
+            using IDbConnection connection = this.CreateConnection();
+
+            int rta = ((SqlConnection)connection).BulkInsert(entities, mappings, options, hints, null, batchSize, isReturnIdentity, usePhysicalPseudoTempTable, transaction);
+
+            return (TKey)(object)rta;
         }
 
         /// <summary>

@@ -1,7 +1,10 @@
 # Changelog - Gasolutions.Core.Repository
 
-## [1.0.9] - 2025-02-28
-
+## [1.0.9.1] 
+### Added
+- BulkInsert method for efficient batch insert operations
+- 
+## [1.0.9] 
 ### Added
 - Comprehensive test suite with 514 unit tests (506 passing)
   - 272 tests for `WriteGenericRepositoryRepoDB<T, TKey>`
