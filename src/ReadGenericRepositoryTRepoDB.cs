@@ -29,19 +29,17 @@ namespace Gasolutions.Core.Repository
         private string ConnectionString { get; set; } = string.Empty;
 
         /// <inheritdoc/>
-        public TKey Count()
+        public long Count()
         {
             using SqlConnection connection = new(this.ConnectionString);
-            long x = connection.Count<T>(where: (object?)null);
-            return (TKey)(object)x;
+            return connection.Count<T>(where: (object?)null);
         }
 
         /// <inheritdoc/>
-        public TKey Count(object whereOrPrimaryKey)
+        public long Count(object whereOrPrimaryKey)
         {
             using SqlConnection connection = new(this.ConnectionString);
-            long x = connection.Count<T>(where: whereOrPrimaryKey);
-            return (TKey)(object)x;
+            return connection.Count<T>(where: whereOrPrimaryKey);
         }
 
         /// <summary>

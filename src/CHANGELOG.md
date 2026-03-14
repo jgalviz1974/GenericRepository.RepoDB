@@ -1,4 +1,8 @@
 # Changelog - Gasolutions.Core.Repository
+## [1.0.9.4] 
+### Fixed
+- Count methods now return long type to accommodate large record counts and prevent overflow issues
+
 ## [1.0.9.3] 
 ### Added
 - Count methods for efficient record counting without data retrieval
