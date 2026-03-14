@@ -28,6 +28,22 @@ namespace Gasolutions.Core.Repository
         /// </summary>
         private string ConnectionString { get; set; } = string.Empty;
 
+        /// <inheritdoc/>
+        public TKey Count()
+        {
+            using SqlConnection connection = new(this.ConnectionString);
+            long x = connection.Count<T>(where: (object?)null);
+            return (TKey)(object)x;
+        }
+
+        /// <inheritdoc/>
+        public TKey Count(object whereOrPrimaryKey)
+        {
+            using SqlConnection connection = new(this.ConnectionString);
+            long x = connection.Count<T>(where: whereOrPrimaryKey);
+            return (TKey)(object)x;
+        }
+
         /// <summary>
         /// Executes a query using a where object or primary key and returns matching entities.
         /// </summary>

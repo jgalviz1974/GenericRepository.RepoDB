@@ -14,7 +14,7 @@
 	<RepositoryType>git</RepositoryType>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<AssemblyVersion>1.0.9.1</AssemblyVersion>
+	<AssemblyVersion>1.0.9.3</AssemblyVersion>
     <Version>$(AssemblyVersion)</Version>
     <FileVersion>$(AssemblyVersion)</FileVersion>
 	<PackageOutputPath Condition="'$(SolutionDir)' != ''">$(SolutionDir)nupkgs</PackageOutputPath>
@@ -39,7 +39,7 @@
 	</Target>
 
   <ItemGroup>
-    <PackageReference Include="Gasolutions.Core.GenericRepository" Version="1.0.9" />
+    <PackageReference Include="Gasolutions.Core.GenericRepository" Version="1.0.9.3" />
     <PackageReference Include="RepoDb.SqlServer" Version="1.13.2-alpha1" />
     <PackageReference Include="RepoDb.SqlServer.BulkOperations" Version="1.13.1" />
   </ItemGroup>

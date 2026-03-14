@@ -54,6 +54,12 @@
             Gets or Sets the Connection string used by the repository to open SQL Server connections.
             </summary>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count(System.Object)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object)">
             <summary>
             Executes a query using a where object or primary key and returns matching entities.

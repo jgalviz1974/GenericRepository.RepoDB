@@ -1,9 +1,12 @@
 # Changelog - Gasolutions.Core.Repository
+## [1.0.9.3] 
+### Added
+- Count methods for efficient record counting without data retrieval
 
 ## [1.0.9.1] 
 ### Added
 - BulkInsert method for efficient batch insert operations
-- 
+ 
 ## [1.0.9] 
 ### Added
 - Comprehensive test suite with 514 unit tests (506 passing)

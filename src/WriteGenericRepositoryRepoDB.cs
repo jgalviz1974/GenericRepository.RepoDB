@@ -113,6 +113,7 @@ namespace Gasolutions.Core.Repository
             }
 
             using IDbConnection connection = this.CreateConnection();
+
             return (TKey)connection.Merge(entity);
         }
 
