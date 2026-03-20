@@ -1,5 +1,9 @@
 # Changelog - Gasolutions.Core.Repository
 ## [1.0.9.4] 
+### Added
+- Add Delete method with transaction support to `WriteGenericRepositoryRepoDB<T, TKey>`
+- 
+## [1.0.9.4] 
 ### Fixed
 - Count methods now return long type to accommodate large record counts and prevent overflow issues
 

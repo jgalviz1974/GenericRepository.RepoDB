@@ -189,6 +189,24 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <summary>
+        /// Deletes records by primary key or by a where clause object using an existing connection and transaction.
+        /// </summary>
+        /// <param name="whereOrPrimaryKey">Primary key value or a where object describing the rows to delete.</param>
+        /// <param name="connection">Open SQL connection to use.</param>
+        /// <param name="transaction">Database transaction to enlist the operation in.</param>
+        /// <returns>The number of deleted rows.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when the whereOrPrimaryKey, connection, or transaction is null.</exception>
+        public int Delete(object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
+        {
+            if (whereOrPrimaryKey == null)
+            {
+                throw new ArgumentNullException(nameof(whereOrPrimaryKey), "Where clause or primary key cannot be null.");
+            }
+
+            return connection.Delete<T>(whereOrPrimaryKey, transaction: transaction);
+        }
+
+        /// <summary>
         /// Deletes all the supplied entities.
         /// </summary>
         /// <param name="entities">Entities to delete.</param>
