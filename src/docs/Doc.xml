@@ -219,6 +219,16 @@
             <param name="whereOrPrimaryKey">Primary key value or a where object describing the rows to delete.</param>
             <returns>The number of deleted rows.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Delete(System.Object,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+            <summary>
+            Deletes records by primary key or by a where clause object using an existing connection and transaction.
+            </summary>
+            <param name="whereOrPrimaryKey">Primary key value or a where object describing the rows to delete.</param>
+            <param name="connection">Open SQL connection to use.</param>
+            <param name="transaction">Database transaction to enlist the operation in.</param>
+            <returns>The number of deleted rows.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when the whereOrPrimaryKey, connection, or transaction is null.</exception>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.DeleteAll(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Deletes all the supplied entities.

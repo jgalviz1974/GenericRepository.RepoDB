@@ -1,5 +1,5 @@
 # Changelog - Gasolutions.Core.Repository
-## [1.0.9.4] 
+## [1.0.9.7] 
 ### Added
 - Add Delete method with transaction support to `WriteGenericRepositoryRepoDB<T, TKey>`
 - 
