@@ -1,4 +1,8 @@
 # Changelog - Gasolutions.Core.Repository
+## [1.0.10.3]
+### Changed
+- Deleted entity parameter from Max method, as it is not necessary for retrieving the maximum value of a column. The method now only requires the column name and additional criteria for filtering the data. This change simplifies the method signature and improves usability while maintaining functionality. Previous versions of the Max method that included the entity parameter have been removed to avoid confusion and ensure consistency in the API design.
+
 ## [1.0.10.2]
 ### Changed
 - Changed ´Max´ method adding field name and additional criteria, removing previous versions. 

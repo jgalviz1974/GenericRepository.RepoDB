@@ -173,13 +173,12 @@ namespace Gasolutions.Core.Repository
         /// <summary>
         /// Gets the maximum value for the specified field in the given table filtered by the where object or primary key using an existing connection and transaction.
         /// </summary>
-        /// <param name="entity">An instance of the entity type <typeparamref name="T"/> (not used in the method but included for interface compatibility).</param>
         /// <param name="fieldName">Name of the field to compute the maximum for.</param>
         /// <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
         /// <param name="connection">An existing SQL connection to use for the query.</param>
         /// <param name="transaction">An existing SQL transaction to use for the query.</param>
         /// <returns>The maximum value of the specified field cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
-        public TKey? Max(T entity, string fieldName, object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
+        public TKey? Max(string fieldName, object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
         {
             RepoDb.Field field = new(fieldName);
             object max = connection.Max<T>(field, whereOrPrimaryKey, transaction: transaction);

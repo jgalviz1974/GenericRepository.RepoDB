@@ -36,6 +36,25 @@
             <param name="commandType">The type of the command (text or stored procedure).</param>
             <returns>A task that represents the asynchronous operation. The task result contains the first JSON string returned by the query, or an empty string if there are no results.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.Max(System.String,System.String,System.Object)">
+            <summary>
+            Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
+            </summary>
+            <param name="tableName">Name of the table to query.</param>
+            <param name="fieldName">Name of the field to compute the maximum for.</param>
+            <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.Max(System.String,System.String,System.Object,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+            <summary>
+            Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
+            </summary>
+            <param name="tableName">Name of the table to query.</param>
+            <param name="fieldName">Name of the field to compute the maximum for.</param>
+            <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
+            <param name="connection">The SQL connection to use for the query.</param>
+            <param name="transaction">The SQL transaction to use for the query.</param>
+            <returns>The maximum value for the specified field, or null if no rows match the filter.</returns>
+        </member>
         <member name="T:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2">
             <summary>
             Generic repository implementation for read operations against a SQL Server database using RepoDb.
@@ -127,14 +146,15 @@
             <param name="renewCache">If true, the cache entry is removed before querying.</param>
             <returns>A task that represents the asynchronous operation. The task result contains an enumerable of all entities of type <typeparamref name="T"/>.</returns>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.MaxAsync(System.String,System.String,System.Object)">
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.String,System.Object,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
             <summary>
-            Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
+            Gets the maximum value for the specified field in the given table filtered by the where object or primary key using an existing connection and transaction.
             </summary>
-            <param name="tableName">Name of the table to query.</param>
             <param name="fieldName">Name of the field to compute the maximum for.</param>
             <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
-            <returns>A task that represents the asynchronous operation. The task result contains the maximum value cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
+            <param name="connection">An existing SQL connection to use for the query.</param>
+            <param name="transaction">An existing SQL transaction to use for the query.</param>
+            <returns>The maximum value of the specified field cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
         </member>
         <member name="T:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2">
             <summary>
