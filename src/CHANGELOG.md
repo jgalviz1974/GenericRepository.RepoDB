@@ -1,4 +1,16 @@
 # Changelog - Gasolutions.Core.Repository
+## [1.0.10.2]
+### Changed
+- Changed ´Max´ method adding field name and additional criteria, removing previous versions. 
+
+## [1.0.10.1]
+### Changed
+- Changed the return type of Max methods to support nullable values.
+
+## [1.0.10.0]
+### Added
+- Added 'Max' method to `IGenericRepository` interface for retrieving the maximum value of a specified column in a table, enhancing data analysis capabilities.
+
 ## [1.0.9.7] 
 ### Added
 - Add Delete method with transaction support to `WriteGenericRepositoryRepoDB<T, TKey>`

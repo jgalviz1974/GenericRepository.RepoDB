@@ -171,18 +171,18 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <summary>
-        /// Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
+        /// Gets the maximum value for the specified field in the given table filtered by the where object or primary key using an existing connection and transaction.
         /// </summary>
-        /// <param name="tableName">Name of the table to query.</param>
+        /// <param name="entity">An instance of the entity type <typeparamref name="T"/> (not used in the method but included for interface compatibility).</param>
         /// <param name="fieldName">Name of the field to compute the maximum for.</param>
         /// <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
-        /// <returns>A task that represents the asynchronous operation. The task result contains the maximum value cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
-        public async Task<TKey?> MaxAsync(string tableName, string fieldName, object whereOrPrimaryKey)
+        /// <param name="connection">An existing SQL connection to use for the query.</param>
+        /// <param name="transaction">An existing SQL transaction to use for the query.</param>
+        /// <returns>The maximum value of the specified field cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
+        public TKey? Max(T entity, string fieldName, object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
         {
             RepoDb.Field field = new(fieldName);
-
-            using SqlConnection connection = new(this.ConnectionString);
-            object max = await connection.MaxAsync(tableName, field, whereOrPrimaryKey);
+            object max = connection.Max<T>(field, whereOrPrimaryKey, transaction: transaction);
 
             if (max == DBNull.Value)
             {

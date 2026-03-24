@@ -61,5 +61,59 @@ namespace Gasolutions.Core.Repository
 
             return result?.FirstOrDefault() ?? string.Empty;
         }
+
+        /// <summary>
+        /// Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
+        /// </summary>
+        /// <param name="tableName">Name of the table to query.</param>
+        /// <param name="fieldName">Name of the field to compute the maximum for.</param>
+        /// <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
+        public object? Max(string tableName, string fieldName, object whereOrPrimaryKey)
+        {
+            RepoDb.Field field = new(fieldName);
+
+            using SqlConnection connection = new(this.ConnectionString);
+            object max = connection.Max(tableName, field, whereOrPrimaryKey);
+
+            if (max == DBNull.Value)
+            {
+                return null;
+            }
+
+            return max;
+        }
+
+        /// <summary>
+        /// Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
+        /// </summary>
+        /// <param name="tableName">Name of the table to query.</param>
+        /// <param name="fieldName">Name of the field to compute the maximum for.</param>
+        /// <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
+        /// <param name="connection">The SQL connection to use for the query.</param>
+        /// <param name="transaction">The SQL transaction to use for the query.</param>
+        /// <returns>The maximum value for the specified field, or null if no rows match the filter.</returns>
+        public object? Max(string tableName, string fieldName, object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
+        {
+            RepoDb.Field field = new(fieldName);
+
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new ArgumentNullException(nameof(fieldName), "Field name cannot be null or empty.");
+            }
+
+            if (string.IsNullOrEmpty(tableName))
+            {
+                throw new ArgumentNullException(nameof(tableName), "Table name cannot be null or empty.");
+            }
+
+            object max = connection.Max(tableName, field, whereOrPrimaryKey, transaction: transaction);
+
+            if (max == DBNull.Value)
+            {
+                return null;
+            }
+
+            return max;
+        }
     }
 }
