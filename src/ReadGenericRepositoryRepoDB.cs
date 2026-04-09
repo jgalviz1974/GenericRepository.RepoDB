@@ -134,14 +134,12 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
-        public string QueryAndReturnJson(string commandText, CommandType commandType, IDbTransaction transaction)
+        public string QueryAndReturnJson(string commandText, CommandType commandType, SqlConnection connection, IDbTransaction transaction)
         {
             if (commandText == null)
             {
                 throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
             }
-
-            using SqlConnection connection = new(this.ConnectionString);
 
             IEnumerable<string> result = connection.ExecuteQuery<string>(
                 commandText,
@@ -152,14 +150,12 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
-        public T ExecuteScalar<T>(string commandText, CommandType commandType, IDbTransaction transaction)
+        public T ExecuteScalar<T>(string commandText, CommandType commandType, SqlConnection connection, IDbTransaction transaction)
         {
             if (commandText == null)
             {
                 throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
             }
-
-            using SqlConnection connection = new(this.ConnectionString);
 
             T result = connection.ExecuteScalar<T>(
                 commandText,

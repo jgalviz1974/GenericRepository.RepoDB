@@ -58,10 +58,10 @@
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType)">
             <inheritdoc/>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
         <member name="T:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2">

@@ -1,4 +1,9 @@
 # Changelog - Gasolutions.Core.Repository
+
+## [1.0.10.6]
+### Changed
+- Bug correction in ExecuteScalar method of `IGenericRepository` interface to ensure proper handling of null values and exceptions, improving the robustness and reliability of scalar query executions in applications using this repository.
+
 ## [1.0.10.5]
 ### Changed
 - Addded transaction support to ExecuteScalar method in `IGenericRepository` interface, allowing for better control over database operations and ensuring data integrity during complex transactions. This enhancement enables developers to execute scalar queries within a transactional context, providing the ability to commit or roll back changes based on the success or failure of the operations, thus improving the robustness and reliability of data interactions in applications using this repository.
