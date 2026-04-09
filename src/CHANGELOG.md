@@ -1,4 +1,12 @@
 # Changelog - Gasolutions.Core.Repository
+## [1.0.10.5]
+### Changed
+- Addded transaction support to ExecuteScalar method in `IGenericRepository` interface, allowing for better control over database operations and ensuring data integrity during complex transactions. This enhancement enables developers to execute scalar queries within a transactional context, providing the ability to commit or roll back changes based on the success or failure of the operations, thus improving the robustness and reliability of data interactions in applications using this repository.
+
+## [1.0.10.4]
+### Added
+- Addded ExecuteScalar method to `IGenericRepository` interface for executing scalar queries and retrieving single values from the database, enhancing query capabilities and flexibility in data retrieval. 
+
 ## [1.0.10.3]
 ### Changed
 - Deleted entity parameter from Max method, as it is not necessary for retrieving the maximum value of a column. The method now only requires the column name and additional criteria for filtering the data. This change simplifies the method signature and improves usability while maintaining functionality. Previous versions of the Max method that included the entity parameter have been removed to avoid confusion and ensure consistency in the API design.

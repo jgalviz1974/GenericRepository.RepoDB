@@ -115,5 +115,58 @@ namespace Gasolutions.Core.Repository
 
             return max;
         }
+
+        /// <inheritdoc/>
+        public T ExecuteScalar<T>(string commandText, CommandType commandType)
+        {
+            if (commandText == null)
+            {
+                throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
+            }
+
+            using SqlConnection connection = new(this.ConnectionString);
+
+            T result = connection.ExecuteScalar<T>(
+                commandText,
+                commandType: commandType);
+
+            return result;
+        }
+
+        /// <inheritdoc/>
+        public string QueryAndReturnJson(string commandText, CommandType commandType, IDbTransaction transaction)
+        {
+            if (commandText == null)
+            {
+                throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
+            }
+
+            using SqlConnection connection = new(this.ConnectionString);
+
+            IEnumerable<string> result = connection.ExecuteQuery<string>(
+                commandText,
+                transaction: transaction,
+                commandType: commandType);
+
+            return result?.FirstOrDefault() ?? string.Empty;
+        }
+
+        /// <inheritdoc/>
+        public T ExecuteScalar<T>(string commandText, CommandType commandType, IDbTransaction transaction)
+        {
+            if (commandText == null)
+            {
+                throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
+            }
+
+            using SqlConnection connection = new(this.ConnectionString);
+
+            T result = connection.ExecuteScalar<T>(
+                commandText,
+                transaction: transaction,
+                commandType: commandType);
+
+            return result;
+        }
     }
 }

@@ -55,6 +55,15 @@
             <param name="transaction">The SQL transaction to use for the query.</param>
             <returns>The maximum value for the specified field, or null if no rows match the filter.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="T:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2">
             <summary>
             Generic repository implementation for read operations against a SQL Server database using RepoDb.
