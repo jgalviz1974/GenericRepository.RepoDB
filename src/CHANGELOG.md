@@ -1,4 +1,7 @@
 # Changelog - Gasolutions.Core.Repository
+## [1.0.10.9]
+### Changed
+- 
 
 ## [1.0.10.6]
 ### Changed
