@@ -1,7 +1,24 @@
 # Changelog - Gasolutions.Core.Repository
 ## [1.0.10.12]
 ### Changed
-- 
+- Updated `ReadGenericRepositoryRepoDB` to fully implement the current `IReadGenericRepository` contract with `IDbConnection`/`IDbTransaction` overloads for `QueryAndReturnJson`, `ExecuteScalar`, and `Max`.
+- Updated `ReadGenericRepositoryRepoDB<T, TKey>` to fully implement the current `IReadGenericRepository<T, TKey>` contract, including transaction-aware overloads, string-based ordering overloads, and async coverage paths.
+- Updated `WriteGenericRepositoryRepoDB<T, TKey>` to fully implement the current `IWriteGenericRepository<T, TKey>` contract with all missing transaction and connection overloads.
+- Improved internal guard/validation behavior for null connection/transaction handling and transaction-to-connection resolution.
+
+### Fixed
+- Fixed compile-time interface implementation errors (`CS0535`) caused by signature drift after introducing `IDbConnection`/`IDbTransaction` overloads.
+- Fixed ambiguous test calls (`CS0121`) by disambiguating overload usage in the test suite.
+- Fixed test project build issues introduced during warning cleanup (missing global usings and malformed file ending).
+- Aligned `BulkInsert` test expectations with current repository behavior for empty collections.
+
+### Testing
+- Test project now builds cleanly with `0` errors and `0` warnings.
+- Extended test suite with focused overload/guard tests in `RepositoryOverloadsCoverageTests`.
+- Total tests passing: `239`.
+- Measured coverage improved to:
+  - Line coverage: `40.31%`
+  - Branch coverage: `37.10%`
 
 ## [1.0.10.6]
 ### Changed

@@ -7,6 +7,7 @@
     <LangVersion>13.0</LangVersion>
     <IsTestProject>true</IsTestProject>
     <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
+    <NoWarn>$(NoWarn);SA0001</NoWarn>
     <Title>Gasolutions Core Repository Tests</Title>
     <Authors>José David Galviz Muñoz</Authors>
     <Company>Gasolutions SAS</Company>
@@ -32,6 +33,8 @@
     <Using Include="Gasolutions.Core.Repository" />
     <Using Include="Gasolutions.Core.Repository.Interfaces" />
     <Using Include="System.Data" />
+    <Using Include="System.Data.Common" />
+    <Using Include="Microsoft.Data.SqlClient" />
     <Using Include="Moq" />
   </ItemGroup>
 

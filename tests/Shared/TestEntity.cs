@@ -1,6 +1,4 @@
-// <copyright file="TestEntity.cs" company="Gasolutions SAS">
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
-// </copyright>
 
 namespace Gasolutions.Core.Repository.UnitTests
 {

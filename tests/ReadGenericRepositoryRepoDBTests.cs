@@ -1,12 +1,4 @@
-// <copyright file="ReadGenericRepositoryRepoDBTests.cs" company="Gasolutions SAS">
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
-// </copyright>
-
-using System;
-using System.Data;
-using System.Threading.Tasks;
-
-using Xunit;
 
 namespace Gasolutions.Core.Repository.UnitTests
 {

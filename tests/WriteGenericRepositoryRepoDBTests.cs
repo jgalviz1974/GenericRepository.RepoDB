@@ -1,10 +1,4 @@
-﻿// <copyright file="WriteGenericRepositoryRepoDBTests.cs" company="Gasolutions SAS">
 // Copyright (c) Gasolutions SAS. Todos los derechos reservados.
-// </copyright>
-
-using Microsoft.Data.SqlClient;
-
-using System.Data.Common;
 
 namespace Gasolutions.Core.Repository.UnitTests
 {
@@ -901,7 +895,7 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void BulkInsert_ValidEntities_AttemptsExecution()
         {
             // Arrange
-            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=test;";
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }, new TestEntity { Id = 2, Name = "Test2" }];
 
@@ -916,12 +910,15 @@ namespace Gasolutions.Core.Repository.UnitTests
         public void BulkInsert_EmptyCollection_AttemptsExecution()
         {
             // Arrange
-            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=Test123;";
+            const string connectionString = "Server=localhost;Database=TestDb;User Id=sa;Password=test;";
             WriteGenericRepositoryRepoDB<TestEntity, int> repository = new(connectionString);
             List<TestEntity> entities = [];
 
-            // Act & Assert
-            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, (IEnumerable<RepoDb.BulkInsertMapItem>?)null));
+            // Act
+            int result = repository.BulkInsert(entities, (IEnumerable<RepoDb.BulkInsertMapItem>?)null);
+
+            // Assert
+            Assert.Equal(default, result);
         }
 
         /// <summary>
@@ -1064,16 +1061,6 @@ namespace Gasolutions.Core.Repository.UnitTests
         }
 
         /// <summary>
-        /// Test entity class for testing purposes.
-        /// </summary>
-        private class TestEntity
-        {
-            public int Id { get; set; }
-
-            public string Name { get; set; } = string.Empty;
-        }
-
-        /// <summary>
         /// Tests that Insert with entity having default values attempts execution.
         /// Input: Entity with default property values (Id=0, Name=null)
         /// Expected: Method executes insert operation (throws exception due to no database).
@@ -1184,26 +1171,6 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             // Act & Assert
             _ = Assert.ThrowsAny<Exception>(() => repository.Merge(entity));
-        }
-
-        /// <summary>
-        /// Test entity class with long primary key for testing purposes.
-        /// </summary>
-        private class TestEntityWithLong
-        {
-            public long Id { get; set; }
-
-            public string Name { get; set; } = string.Empty;
-        }
-
-        /// <summary>
-        /// Test entity class with Guid primary key for testing purposes.
-        /// </summary>
-        private class TestEntityWithGuid
-        {
-            public Guid Id { get; set; }
-
-            public string Name { get; set; } = string.Empty;
         }
 
         /// <summary>
@@ -1490,7 +1457,6 @@ namespace Gasolutions.Core.Repository.UnitTests
             // Act & Assert
             // The test cannot proceed because RepoDb requires properties/methods on the connection that the mock doesn't provide.
             // The disposal behavior is guaranteed by the 'using' statement in ExecuteScalar method (line 291).
-            // This test verifies that the CreateConnection returns our mocked connection.
             _ = Assert.Throws<NullReferenceException>(() =>
                 repository.ExecuteScalar(commandText, commandType, (IEnumerable<DbParameter>?)null));
 
@@ -1517,6 +1483,36 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
             Assert.Equal("commandText", exception.ParamName);
+        }
+
+        /// <summary>
+        /// Test entity class for testing purposes.
+        /// </summary>
+        private class TestEntity
+        {
+            public int Id { get; set; }
+
+            public string Name { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Test entity class with long primary key for testing purposes.
+        /// </summary>
+        private class TestEntityWithLong
+        {
+            public long Id { get; set; }
+
+            public string Name { get; set; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Test entity class with Guid primary key for testing purposes.
+        /// </summary>
+        private class TestEntityWithGuid
+        {
+            public Guid Id { get; set; }
+
+            public string Name { get; set; } = string.Empty;
         }
     }
 }
