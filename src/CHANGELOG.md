@@ -1,5 +1,5 @@
 # Changelog - Gasolutions.Core.Repository
-## [1.0.10.9]
+## [1.0.10.12]
 ### Changed
 - 
 

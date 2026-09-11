@@ -14,7 +14,7 @@
 	<RepositoryType>git</RepositoryType>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<AssemblyVersion>1.0.10.6</AssemblyVersion>
+	<AssemblyVersion>1.0.10.12</AssemblyVersion>
     <Version>$(AssemblyVersion)</Version>
     <FileVersion>$(AssemblyVersion)</FileVersion>
 	<PackageOutputPath Condition="'$(SolutionDir)' != ''">$(SolutionDir)nupkgs</PackageOutputPath>
@@ -39,9 +39,9 @@
 	</Target>
 
   <ItemGroup>
-    <PackageReference Include="Gasolutions.Core.GenericRepository" Version="1.0.10.6" />
-    <PackageReference Include="RepoDb.SqlServer" Version="1.13.2-alpha1" />
-    <PackageReference Include="RepoDb.SqlServer.BulkOperations" Version="1.13.1" />
+    <PackageReference Include="Gasolutions.Core.GenericRepository" Version="1.0.10.12" />
+    <PackageReference Include="RepoDb.SqlServer" Version="1.16.0" />
+    <PackageReference Include="RepoDb.SqlServer.BulkOperations" Version="1.16.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +50,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <Pack>True</Pack>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Roslynator.Analyzers" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

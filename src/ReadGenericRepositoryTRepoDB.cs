@@ -36,10 +36,38 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
+        public long Count(IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.Count(connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public long Count(IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            return connection.Count<T>(where: (object?)null, transaction: transaction);
+        }
+
+        /// <inheritdoc/>
         public long Count(object whereOrPrimaryKey)
         {
             using SqlConnection connection = new(this.ConnectionString);
             return connection.Count<T>(where: whereOrPrimaryKey);
+        }
+
+        /// <inheritdoc/>
+        public long Count(object whereOrPrimaryKey, IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.Count(whereOrPrimaryKey, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public long Count(object whereOrPrimaryKey, IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            return connection.Count<T>(where: whereOrPrimaryKey, transaction: transaction);
         }
 
         /// <summary>
@@ -51,6 +79,20 @@ namespace Gasolutions.Core.Repository
         {
             using SqlConnection connection = new(this.ConnectionString);
             return connection.Query<T>(whereOrPrimaryKey);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> Query(object whereOrPrimaryKey, IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.Query(whereOrPrimaryKey, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> Query(object whereOrPrimaryKey, IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            return connection.Query<T>(whereOrPrimaryKey, transaction: transaction);
         }
 
         /// <summary>
@@ -65,6 +107,27 @@ namespace Gasolutions.Core.Repository
             return connection.Query<T>(whereOrPrimaryKey, orderBy: orderBy);
         }
 
+        /// <inheritdoc/>
+        public IEnumerable<T> Query(object whereOrPrimaryKey, IEnumerable<string> orderBy)
+        {
+            using SqlConnection connection = new(this.ConnectionString);
+            return connection.Query<T>(whereOrPrimaryKey, orderBy: this.ToOrderFields(orderBy));
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> Query(object whereOrPrimaryKey, IEnumerable<string> orderBy, IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.Query(whereOrPrimaryKey, orderBy, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> Query(object whereOrPrimaryKey, IEnumerable<string> orderBy, IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            return connection.Query<T>(whereOrPrimaryKey, orderBy: this.ToOrderFields(orderBy), transaction: transaction);
+        }
+
         /// <summary>
         /// Retrieves all entities of type <typeparamref name="T"/> from the database.
         /// </summary>
@@ -75,6 +138,20 @@ namespace Gasolutions.Core.Repository
             return connection.QueryAll<T>();
         }
 
+        /// <inheritdoc/>
+        public IEnumerable<T> QueryAll(IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.QueryAll(connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> QueryAll(IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            return connection.QueryAll<T>(transaction: transaction);
+        }
+
         /// <summary>
         /// Retrieves all entities of type <typeparamref name="T"/> and optionally uses a memory cache key.
         /// </summary>
@@ -83,16 +160,25 @@ namespace Gasolutions.Core.Repository
         /// <returns>An enumerable of all entities of type <typeparamref name="T"/>.</returns>
         public IEnumerable<T> QueryAll(string cacheKey, bool renewCache)
         {
-            MemoryCache cache = [];
-
-            if (renewCache)
-            {
-                cache.Remove(cacheKey);
-            }
-
+            MemoryCache cache = this.CreateQueryAllCache(cacheKey, renewCache);
             using SqlConnection connection = new(this.ConnectionString);
 
             return connection.QueryAll<T>(cacheKey: cacheKey, cache: cache);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> QueryAll(string cacheKey, bool renewCache, IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.QueryAll(cacheKey, renewCache, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public IEnumerable<T> QueryAll(string cacheKey, bool renewCache, IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            MemoryCache cache = this.CreateQueryAllCache(cacheKey, renewCache);
+            return connection.QueryAll<T>(cacheKey: cacheKey, cache: cache, transaction: transaction);
         }
 
         /// <summary>
@@ -115,6 +201,53 @@ namespace Gasolutions.Core.Repository
             }
 
             return (TKey?)max;
+        }
+
+        /// <inheritdoc/>
+        public TKey? Max(string fieldName, object whereOrPrimaryKey, IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.Max(fieldName, whereOrPrimaryKey, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public TKey? Max(string fieldName, object whereOrPrimaryKey, IDbConnection connection, IDbTransaction transaction)
+        {
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new ArgumentNullException(nameof(fieldName), "Field name cannot be null or empty.");
+            }
+
+            ValidateConnectionAndTransaction(connection, transaction);
+            RepoDb.Field field = new(fieldName);
+            object max = connection.Max<T>(field, whereOrPrimaryKey, transaction: transaction);
+
+            if (max == DBNull.Value)
+            {
+                return null;
+            }
+
+            return (TKey?)max;
+        }
+
+        /// <inheritdoc/>
+        public TKey? Max(object whereOrPrimaryKey)
+        {
+            throw new NotSupportedException("Max(object whereOrPrimaryKey) is not supported by the current RepoDb API. Use Max(fieldName, whereOrPrimaryKey, ...) overload instead.");
+        }
+
+        /// <inheritdoc/>
+        public TKey? Max(object whereOrPrimaryKey, IDbTransaction transaction)
+        {
+            IDbConnection connection = GetConnectionFromTransaction(transaction);
+            return this.Max(whereOrPrimaryKey, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public TKey? Max(object whereOrPrimaryKey, IDbConnection connection, IDbTransaction transaction)
+        {
+            ValidateConnectionAndTransaction(connection, transaction);
+            throw new NotSupportedException("Max(object whereOrPrimaryKey, connection, transaction) is not supported by the current RepoDb API. Use Max(fieldName, whereOrPrimaryKey, connection, transaction) overload instead.");
         }
 
         /// <summary>
@@ -158,6 +291,38 @@ namespace Gasolutions.Core.Repository
         /// <returns>A task that represents the asynchronous operation. The task result contains an enumerable of all entities of type <typeparamref name="T"/>.</returns>
         public async Task<IEnumerable<T>> QueryAllAsync(string cacheKey, bool renewCache)
         {
+            MemoryCache cache = this.CreateQueryAllCache(cacheKey, renewCache);
+            using SqlConnection connection = new(this.ConnectionString);
+
+            return await connection.QueryAllAsync<T>(cacheKey: cacheKey, cache: cache);
+        }
+
+        private static IDbConnection GetConnectionFromTransaction(IDbTransaction transaction)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
+            }
+
+            return transaction.Connection
+                ?? throw new InvalidOperationException("The provided transaction is not associated with a connection.");
+        }
+
+        private static void ValidateConnectionAndTransaction(IDbConnection connection, IDbTransaction transaction)
+        {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection), "Connection cannot be null.");
+            }
+
+            if (transaction == null)
+            {
+                throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
+            }
+        }
+
+        private MemoryCache CreateQueryAllCache(string cacheKey, bool renewCache)
+        {
             MemoryCache cache = [];
 
             if (renewCache)
@@ -165,30 +330,28 @@ namespace Gasolutions.Core.Repository
                 cache.Remove(cacheKey);
             }
 
-            using SqlConnection connection = new(this.ConnectionString);
-
-            return await connection.QueryAllAsync<T>(cacheKey: cacheKey, cache: cache);
+            return cache;
         }
 
-        /// <summary>
-        /// Gets the maximum value for the specified field in the given table filtered by the where object or primary key using an existing connection and transaction.
-        /// </summary>
-        /// <param name="fieldName">Name of the field to compute the maximum for.</param>
-        /// <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
-        /// <param name="connection">An existing SQL connection to use for the query.</param>
-        /// <param name="transaction">An existing SQL transaction to use for the query.</param>
-        /// <returns>The maximum value of the specified field cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
-        public TKey? Max(string fieldName, object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
+        private IEnumerable<OrderField> ToOrderFields(IEnumerable<string> orderBy)
         {
-            RepoDb.Field field = new(fieldName);
-            object max = connection.Max<T>(field, whereOrPrimaryKey, transaction: transaction);
-
-            if (max == DBNull.Value)
+            if (orderBy == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(orderBy), "Order by fields cannot be null.");
             }
 
-            return (TKey?)max;
+            List<OrderField> orderFields = [];
+            foreach (string field in orderBy)
+            {
+                if (string.IsNullOrWhiteSpace(field))
+                {
+                    throw new ArgumentException("Order by fields cannot contain null or empty values.", nameof(orderBy));
+                }
+
+                orderFields.Add(new OrderField(field));
+            }
+
+            return orderFields;
         }
     }
 }

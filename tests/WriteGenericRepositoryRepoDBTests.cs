@@ -889,7 +889,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             IEnumerable<TestEntity>? entities = null;
 
             // Act & Assert
-            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.BulkInsert(entities!));
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => repository.BulkInsert(entities!, (IEnumerable<RepoDb.BulkInsertMapItem>?)null));
             Assert.Equal("entities", exception.ParamName);
             Assert.Contains("Entities collection cannot be null.", exception.Message);
         }
@@ -906,7 +906,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             List<TestEntity> entities = [new TestEntity { Id = 1, Name = "Test1" }, new TestEntity { Id = 2, Name = "Test2" }];
 
             // Act & Assert
-            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, (IEnumerable<RepoDb.BulkInsertMapItem>?)null));
         }
 
         /// <summary>
@@ -921,7 +921,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             List<TestEntity> entities = [];
 
             // Act & Assert
-            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, (IEnumerable<RepoDb.BulkInsertMapItem>?)null));
         }
 
         /// <summary>
@@ -1045,7 +1045,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             List<TestEntityWithLong> entities = [new TestEntityWithLong { Id = 1, Name = "Test1" }];
 
             // Act & Assert
-            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, (IEnumerable<RepoDb.BulkInsertMapItem>?)null));
         }
 
         /// <summary>
@@ -1060,7 +1060,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             List<TestEntityWithGuid> entities = [new TestEntityWithGuid { Id = Guid.NewGuid(), Name = "Test1" }];
 
             // Act & Assert
-            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities));
+            _ = Assert.ThrowsAny<Exception>(() => repository.BulkInsert(entities, (IEnumerable<RepoDb.BulkInsertMapItem>?)null));
         }
 
         /// <summary>
@@ -1379,7 +1379,7 @@ namespace Gasolutions.Core.Repository.UnitTests
 
             // Act & Assert
             Exception exception = Assert.ThrowsAny<Exception>(() =>
-                repository.ExecuteScalar(commandText, commandType, null));
+                repository.ExecuteScalar(commandText, commandType, (IEnumerable<DbParameter>?)null));
 
             Assert.False(
                 exception is ArgumentException argEx && argEx.ParamName == "commandText",
@@ -1435,7 +1435,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             // El test verifica que la validación pasa (no lanza ArgumentException)
             // y que el método intenta conectarse (lanza excepción de conexión)
             Exception exception = Assert.ThrowsAny<Exception>(() =>
-                repository.ExecuteScalar(commandText, commandType, null));
+                repository.ExecuteScalar(commandText, commandType, (IEnumerable<DbParameter>?)null));
 
             // Verificar que NO es una excepción de validación
             Assert.False(
@@ -1492,7 +1492,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             // The disposal behavior is guaranteed by the 'using' statement in ExecuteScalar method (line 291).
             // This test verifies that the CreateConnection returns our mocked connection.
             _ = Assert.Throws<NullReferenceException>(() =>
-                repository.ExecuteScalar(commandText, commandType, null));
+                repository.ExecuteScalar(commandText, commandType, (IEnumerable<DbParameter>?)null));
 
             // Even though ExecuteScalar throws, the using statement ensures Dispose is called
             Assert.True(connectionDisposed, "Connection should be disposed even when an exception occurs within the using block");
@@ -1513,7 +1513,7 @@ namespace Gasolutions.Core.Repository.UnitTests
             CommandType invalidCommandType = (CommandType)999;
 
             // Act & Assert
-            ArgumentException exception = Assert.Throws<ArgumentException>(() => repository.ExecuteScalar(commandText!, invalidCommandType, null));
+            ArgumentException exception = Assert.Throws<ArgumentException>(() => repository.ExecuteScalar(commandText!, invalidCommandType, (IEnumerable<DbParameter>?)null));
 
             Assert.Equal("Command text cannot be null or whitespace. (Parameter 'commandText')", exception.Message);
             Assert.Equal("commandText", exception.ParamName);

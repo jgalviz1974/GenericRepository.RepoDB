@@ -44,7 +44,7 @@
             <param name="fieldName">Name of the field to compute the maximum for.</param>
             <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.Max(System.String,System.String,System.Object,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.Max(System.String,System.String,System.Object,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <summary>
             Returns the maximum value for the specified field in the given table filtered by the where object or primary key asynchronously.
             </summary>
@@ -55,13 +55,22 @@
             <param name="transaction">The SQL transaction to use for the query.</param>
             <returns>The maximum value for the specified field, or null if no rows match the filter.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.Max(System.String,System.String,System.Object,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType)">
             <inheritdoc/>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
         <member name="T:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2">
@@ -85,7 +94,19 @@
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count">
             <inheritdoc/>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count(System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count(System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count(System.Object,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Count(System.Object,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object)">
@@ -95,6 +116,12 @@
             <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key value.</param>
             <returns>An enumerable of entities of type <typeparamref name="T"/> matching the query.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object,System.Collections.Generic.IEnumerable{RepoDb.OrderField})">
             <summary>
             Executes a query using a where object or primary key and returns matching entities ordered by the specified fields.
@@ -103,11 +130,26 @@
             <param name="orderBy">Sequence of fields describing the ordering for the returned rows.</param>
             <returns>An enumerable of entities of type <typeparamref name="T"/> matching the query.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object,System.Collections.Generic.IEnumerable{System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object,System.Collections.Generic.IEnumerable{System.String},System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Query(System.Object,System.Collections.Generic.IEnumerable{System.String},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAll">
             <summary>
             Retrieves all entities of type <typeparamref name="T"/> from the database.
             </summary>
             <returns>An enumerable of all entities of type <typeparamref name="T"/>.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAll(System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAll(System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAll(System.String,System.Boolean)">
             <summary>
@@ -117,6 +159,12 @@
             <param name="renewCache">If true, the cache entry is removed before querying.</param>
             <returns>An enumerable of all entities of type <typeparamref name="T"/>.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAll(System.String,System.Boolean,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAll(System.String,System.Boolean,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.String,System.String,System.Object)">
             <summary>
             Returns the maximum value for the specified field in the given table filtered by the where object or primary key.
@@ -125,6 +173,21 @@
             <param name="fieldName">Name of the field to compute the maximum for.</param>
             <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
             <returns>The maximum value cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.String,System.Object,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.String,System.Object,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.Object)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.Object,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.Object,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.QueryAsync(System.Object)">
             <summary>
@@ -155,16 +218,6 @@
             <param name="renewCache">If true, the cache entry is removed before querying.</param>
             <returns>A task that represents the asynchronous operation. The task result contains an enumerable of all entities of type <typeparamref name="T"/>.</returns>
         </member>
-        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB`2.Max(System.String,System.Object,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
-            <summary>
-            Gets the maximum value for the specified field in the given table filtered by the where object or primary key using an existing connection and transaction.
-            </summary>
-            <param name="fieldName">Name of the field to compute the maximum for.</param>
-            <param name="whereOrPrimaryKey">An object representing the WHERE clause or the primary key for filtering.</param>
-            <param name="connection">An existing SQL connection to use for the query.</param>
-            <param name="transaction">An existing SQL transaction to use for the query.</param>
-            <returns>The maximum value of the specified field cast to <typeparamref name="TKey"/>, or null if no rows exist.</returns>
-        </member>
         <member name="T:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2">
             <summary>
             Repository implementation for write operations against a relational database (SQL Server).
@@ -191,7 +244,7 @@
             <param name="entity">Entity to insert.</param>
             <returns>The generated primary key of type <typeparamref name="TKey"/>.</returns>
         </member>
-        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Insert(`0,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Insert(`0,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <summary>
             Inserts the specified entity using an existing open connection and transaction.
             </summary>
@@ -200,6 +253,9 @@
             <param name="transaction">Database transaction to enlist the operation in.</param>
             <returns>The generated primary key of type <typeparamref name="TKey"/>.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Insert(`0,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.InsertAll(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Inserts multiple entities in a single operation.
@@ -207,7 +263,16 @@
             <param name="entities">Collection of entities to insert.</param>
             <returns>The number of inserted rows.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.InsertAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.InsertAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.BulkInsert(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{RepoDb.BulkInsertMapItem},Microsoft.Data.SqlClient.SqlBulkCopyOptions,System.String,System.Nullable{System.Int32},System.Boolean,System.Boolean,Microsoft.Data.SqlClient.SqlTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.BulkInsert(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{Gasolutions.Core.Repository.Interfaces.BulkInsertColumnMap},Gasolutions.Core.Repository.Interfaces.BulkInsertOptions,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0)">
@@ -225,7 +290,7 @@
             <param name="qualifiers">Fields used as qualifiers for the merge operation.</param>
             <returns>The primary key value of the merged entity.</returns>
         </member>
-        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <summary>
             Merges (upserts) the specified entity using an existing connection and transaction.
             </summary>
@@ -234,12 +299,30 @@
             <param name="transaction">Database transaction to enlist the operation in.</param>
             <returns>The primary key value of the merged entity.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0,System.Collections.Generic.IEnumerable{System.String})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0,System.Collections.Generic.IEnumerable{System.String},System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Merge(`0,System.Collections.Generic.IEnumerable{System.String},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.MergeAll(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Merges a collection of entities in a single operation.
             </summary>
             <param name="entities">Collection of entities to merge.</param>
             <returns>The number of processed rows.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.MergeAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.MergeAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbTransaction)">
+            <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Delete(System.Object)">
             <summary>
@@ -248,7 +331,7 @@
             <param name="whereOrPrimaryKey">Primary key value or a where object describing the rows to delete.</param>
             <returns>The number of deleted rows.</returns>
         </member>
-        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Delete(System.Object,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Delete(System.Object,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <summary>
             Deletes records by primary key or by a where clause object using an existing connection and transaction.
             </summary>
@@ -258,12 +341,21 @@
             <returns>The number of deleted rows.</returns>
             <exception cref="T:System.ArgumentNullException">Thrown when the whereOrPrimaryKey, connection, or transaction is null.</exception>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Delete(System.Object,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.DeleteAll(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Deletes all the supplied entities.
             </summary>
             <param name="entities">Entities to delete.</param>
             <returns>The number of deleted rows.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.DeleteAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.DeleteAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbTransaction)">
+            <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Update(`0)">
             <summary>
@@ -272,7 +364,7 @@
             <param name="entity">Entity with updated values.</param>
             <returns>The number of affected rows.</returns>
         </member>
-        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Update(`0,Microsoft.Data.SqlClient.SqlConnection,System.Data.IDbTransaction)">
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Update(`0,System.Data.IDbConnection,System.Data.IDbTransaction)">
             <summary>
             Updates the specified entity using an existing connection and transaction.
             </summary>
@@ -281,12 +373,21 @@
             <param name="transaction">Database transaction to enlist the operation in.</param>
             <returns>The number of affected rows.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.Update(`0,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.UpdateAll(System.Collections.Generic.IEnumerable{`0})">
             <summary>
             Updates a collection of entities in a single operation.
             </summary>
             <param name="entities">Entities to update.</param>
             <returns>The number of affected rows.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.UpdateAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.UpdateAll(System.Collections.Generic.IEnumerable{`0},System.Data.IDbTransaction)">
+            <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteNonQuery(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
             <summary>
@@ -297,6 +398,9 @@
             <param name="parameters">Optional parameters to be added to the command.</param>
             <returns>The number of affected rows.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteNonQuery(System.String,System.Data.CommandType,System.Data.IDbTransaction,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteScalar(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
             <summary>
             Executes a scalar command and returns a typed result.
@@ -305,6 +409,9 @@
             <param name="commandType">Type of the command (Text or StoredProcedure).</param>
             <param name="parameters">Optional parameters to be passed to the command.</param>
             <returns>The scalar result cast to <typeparamref name="TKey"/>.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteScalar(System.String,System.Data.CommandType,System.Data.IDbTransaction,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteReader(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
             <summary>
@@ -315,6 +422,12 @@
             <param name="parameters">Optional parameters to be passed to the command.</param>
             <returns>An <see cref="T:System.Data.IDataReader"/> instance with the query results.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteReader(System.String,System.Data.CommandType,System.Data.IDbTransaction,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteReader(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteQuery(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
             <summary>
             Executes a query and maps the results to a sequence of <typeparamref name="T"/>.
@@ -324,6 +437,12 @@
             <param name="parameters">Optional parameters to be passed to the command.</param>
             <returns>An enumerable of entities returned by the query.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteQuery(System.String,System.Data.CommandType,System.Data.IDbTransaction,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteQuery(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteScalar(System.String,System.Data.CommandType)">
             <summary>
             Executes a scalar command that returns a string.
@@ -331,6 +450,12 @@
             <param name="commandText">SQL command text or stored procedure name.</param>
             <param name="commandType">Type of the command (Text or StoredProcedure).</param>
             <returns>The scalar string result.</returns>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteScalar(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.WriteGenericRepositoryRepoDB`2.ExecuteScalar(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
         </member>
     </members>
 </doc>

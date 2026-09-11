@@ -21,7 +21,6 @@
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
     <PackageReference Include="Moq" Version="4.20.70" />
-    <PackageReference Include="RepoDb.SqlServer" Version="1.13.2-alpha1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -92,10 +92,8 @@ namespace Gasolutions.Core.Repository
         /// <param name="connection">The SQL connection to use for the query.</param>
         /// <param name="transaction">The SQL transaction to use for the query.</param>
         /// <returns>The maximum value for the specified field, or null if no rows match the filter.</returns>
-        public object? Max(string tableName, string fieldName, object whereOrPrimaryKey, SqlConnection connection, IDbTransaction transaction)
+        public object? Max(string tableName, string fieldName, object whereOrPrimaryKey, IDbConnection connection, IDbTransaction transaction)
         {
-            RepoDb.Field field = new(fieldName);
-
             if (string.IsNullOrEmpty(fieldName))
             {
                 throw new ArgumentNullException(nameof(fieldName), "Field name cannot be null or empty.");
@@ -106,6 +104,17 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentNullException(nameof(tableName), "Table name cannot be null or empty.");
             }
 
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection), "Connection cannot be null.");
+            }
+
+            if (transaction == null)
+            {
+                throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
+            }
+
+            RepoDb.Field field = new(fieldName);
             object max = connection.Max(tableName, field, whereOrPrimaryKey, transaction: transaction);
 
             if (max == DBNull.Value)
@@ -114,6 +123,13 @@ namespace Gasolutions.Core.Repository
             }
 
             return max;
+        }
+
+        /// <inheritdoc/>
+        public object? Max(string tableName, string fieldName, object whereOrPrimaryKey, IDbTransaction transaction)
+        {
+            IDbConnection connection = this.GetConnectionFromTransaction(transaction);
+            return this.Max(tableName, fieldName, whereOrPrimaryKey, connection, transaction);
         }
 
         /// <inheritdoc/>
@@ -134,11 +150,21 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
-        public string QueryAndReturnJson(string commandText, CommandType commandType, SqlConnection connection, IDbTransaction transaction)
+        public string QueryAndReturnJson(string commandText, CommandType commandType, IDbConnection connection, IDbTransaction transaction)
         {
             if (commandText == null)
             {
                 throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
+            }
+
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection), "Connection cannot be null.");
+            }
+
+            if (transaction == null)
+            {
+                throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
             }
 
             IEnumerable<string> result = connection.ExecuteQuery<string>(
@@ -150,11 +176,28 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
-        public T ExecuteScalar<T>(string commandText, CommandType commandType, SqlConnection connection, IDbTransaction transaction)
+        public string QueryAndReturnJson(string commandText, CommandType commandType, IDbTransaction transaction)
+        {
+            IDbConnection connection = this.GetConnectionFromTransaction(transaction);
+            return this.QueryAndReturnJson(commandText, commandType, connection, transaction);
+        }
+
+        /// <inheritdoc/>
+        public T ExecuteScalar<T>(string commandText, CommandType commandType, IDbConnection connection, IDbTransaction transaction)
         {
             if (commandText == null)
             {
                 throw new ArgumentNullException(nameof(commandText), "Command text cannot be null.");
+            }
+
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection), "Connection cannot be null.");
+            }
+
+            if (transaction == null)
+            {
+                throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
             }
 
             T result = connection.ExecuteScalar<T>(
@@ -163,6 +206,24 @@ namespace Gasolutions.Core.Repository
                 commandType: commandType);
 
             return result;
+        }
+
+        /// <inheritdoc/>
+        public T ExecuteScalar<T>(string commandText, CommandType commandType, IDbTransaction transaction)
+        {
+            IDbConnection connection = this.GetConnectionFromTransaction(transaction);
+            return this.ExecuteScalar<T>(commandText, commandType, connection, transaction);
+        }
+
+        private IDbConnection GetConnectionFromTransaction(IDbTransaction transaction)
+        {
+            if (transaction == null)
+            {
+                throw new ArgumentNullException(nameof(transaction), "Transaction cannot be null.");
+            }
+
+            return transaction.Connection
+                ?? throw new InvalidOperationException("The provided transaction is not associated with a connection.");
         }
     }
 }
