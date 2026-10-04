@@ -548,8 +548,21 @@ namespace Gasolutions.Core.Repository
                 throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
             }
 
-            using IDbConnection connection = this.CreateConnection();
-            return connection.ExecuteReader(commandText, parameters, commandType);
+            IDbConnection connection = this.CreateConnection();
+            try
+            {
+                IDbCommand command = connection.CreateCommand();
+                command.CommandText = commandText;
+                command.CommandType = commandType;
+                this.AddParameters(command, parameters);
+                connection.Open();
+                return command.ExecuteReader(CommandBehavior.CloseConnection);
+            }
+            catch
+            {
+                connection.Dispose();
+                throw;
+            }
         }
 
         /// <inheritdoc/>

@@ -45,6 +45,13 @@ namespace Gasolutions.Core.Repository
             return result?.FirstOrDefault() ?? string.Empty;
         }
 
+        /// <inheritdoc/>
+        public string QueryAndReturnJson(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters)
+        {
+            return this.ExecuteReader(commandText, commandType, parameters, reader =>
+                reader.Read() && !reader.IsDBNull(0) ? reader.GetString(0) : string.Empty);
+        }
+
         /// <summary>
         /// Asynchronously executes the specified command and returns the first JSON string result (or empty string when no rows).
         /// </summary>
@@ -150,6 +157,20 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
+        public T ExecuteScalar<T>(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters)
+        {
+            return this.ExecuteReader(commandText, commandType, parameters, reader =>
+            {
+                if (!reader.Read() || reader.IsDBNull(0))
+                {
+                    return default!;
+                }
+
+                return (T)Convert.ChangeType(reader.GetValue(0), typeof(T), System.Globalization.CultureInfo.InvariantCulture);
+            });
+        }
+
+        /// <inheritdoc/>
         public string QueryAndReturnJson(string commandText, CommandType commandType, IDbConnection connection, IDbTransaction transaction)
         {
             if (commandText == null)
@@ -173,6 +194,13 @@ namespace Gasolutions.Core.Repository
                 commandType: commandType);
 
             return result?.FirstOrDefault() ?? string.Empty;
+        }
+
+        /// <inheritdoc/>
+        public string QueryAndReturnJson(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters, IDbConnection connection, IDbTransaction transaction)
+        {
+            return this.ExecuteReader(commandText, commandType, parameters, connection, transaction, reader =>
+                reader.Read() && !reader.IsDBNull(0) ? reader.GetString(0) : string.Empty);
         }
 
         /// <inheritdoc/>
@@ -209,6 +237,50 @@ namespace Gasolutions.Core.Repository
         }
 
         /// <inheritdoc/>
+        public T ExecuteScalar<T>(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters, IDbConnection connection, IDbTransaction transaction)
+        {
+            return this.ExecuteReader(commandText, commandType, parameters, connection, transaction, reader =>
+            {
+                if (!reader.Read() || reader.IsDBNull(0))
+                {
+                    return default!;
+                }
+
+                return (T)Convert.ChangeType(reader.GetValue(0), typeof(T), System.Globalization.CultureInfo.InvariantCulture);
+            });
+        }
+
+        /// <inheritdoc/>
+        public TResult ExecuteReader<TResult>(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters, Func<IDataReader, TResult> map)
+        {
+            ArgumentNullException.ThrowIfNull(map);
+            using SqlConnection connection = new(this.ConnectionString);
+            connection.Open();
+            return this.ExecuteReaderCore(commandText, commandType, parameters, connection, null, map);
+        }
+
+        /// <inheritdoc/>
+        public TResult ExecuteReader<TResult>(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters, IDbConnection connection, IDbTransaction transaction, Func<IDataReader, TResult> map)
+        {
+            if (string.IsNullOrWhiteSpace(commandText))
+            {
+                throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
+            }
+
+            ArgumentNullException.ThrowIfNull(parameters);
+            ArgumentNullException.ThrowIfNull(connection);
+            ArgumentNullException.ThrowIfNull(transaction);
+            ArgumentNullException.ThrowIfNull(map);
+            using IDbCommand command = connection.CreateCommand();
+            command.CommandText = commandText;
+            command.CommandType = commandType;
+            command.Transaction = transaction;
+            AddParameters(command, parameters);
+            using IDataReader reader = command.ExecuteReader();
+            return map(reader);
+        }
+
+        /// <inheritdoc/>
         public T ExecuteScalar<T>(string commandText, CommandType commandType, IDbTransaction transaction)
         {
             IDbConnection connection = this.GetConnectionFromTransaction(transaction);
@@ -224,6 +296,31 @@ namespace Gasolutions.Core.Repository
 
             return transaction.Connection
                 ?? throw new InvalidOperationException("The provided transaction is not associated with a connection.");
+        }
+
+        private static void AddParameters(IDbCommand command, IEnumerable<DbParameter> parameters)
+        {
+            foreach (DbParameter parameter in parameters)
+            {
+                _ = command.Parameters.Add(parameter);
+            }
+        }
+
+        private TResult ExecuteReaderCore<TResult>(string commandText, CommandType commandType, IEnumerable<DbParameter> parameters, IDbConnection connection, IDbTransaction? transaction, Func<IDataReader, TResult> map)
+        {
+            if (string.IsNullOrWhiteSpace(commandText))
+            {
+                throw new ArgumentException("Command text cannot be null or whitespace.", nameof(commandText));
+            }
+
+            ArgumentNullException.ThrowIfNull(parameters);
+            using IDbCommand command = connection.CreateCommand();
+            command.CommandText = commandText;
+            command.CommandType = commandType;
+            command.Transaction = transaction;
+            AddParameters(command, parameters);
+            using IDataReader reader = command.ExecuteReader();
+            return map(reader);
         }
     }
 }

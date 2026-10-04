@@ -28,6 +28,9 @@
             <param name="commandType">The type of the command (text or stored procedure).</param>
             <returns>The first JSON string returned by the query, or an empty string if there are no results.</returns>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJsonAsync(System.String,System.Data.CommandType)">
             <summary>
             Asynchronously executes the specified command and returns the first JSON string result (or empty string when no rows).
@@ -61,13 +64,28 @@
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType)">
             <inheritdoc/>
         </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter})">
+            <inheritdoc/>
+        </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter},System.Data.IDbConnection,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.QueryAndReturnJson(System.String,System.Data.CommandType,System.Data.IDbTransaction)">
             <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter},System.Data.IDbConnection,System.Data.IDbTransaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteReader``1(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter},System.Func{System.Data.IDataReader,``0})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteReader``1(System.String,System.Data.CommandType,System.Collections.Generic.IEnumerable{System.Data.Common.DbParameter},System.Data.IDbConnection,System.Data.IDbTransaction,System.Func{System.Data.IDataReader,``0})">
             <inheritdoc/>
         </member>
         <member name="M:Gasolutions.Core.Repository.ReadGenericRepositoryRepoDB.ExecuteScalar``1(System.String,System.Data.CommandType,System.Data.IDbTransaction)">

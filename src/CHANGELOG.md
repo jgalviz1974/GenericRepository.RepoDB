@@ -1,4 +1,14 @@
 # Changelog - Gasolutions.Core.Repository
+
+## [1.0.10.13]
+### Changed
+- Updated RepoDB SQL Server dependencies to `RepoDb.SqlServer` 1.16.1 and `RepoDb.SqlServer.BulkOperations` 1.16.2.
+- Added parameterized `ExecuteReader` overloads to `ReadGenericRepositoryRepoDB`, including connection and transaction support, result mapping, and JSON/scalar helpers.
+- Updated `WriteGenericRepositoryRepoDB<T, TKey>.ExecuteReader` to create and configure commands directly, ensuring parameters are applied and the connection is closed with the returned reader.
+
+### Testing
+- Added tests covering parameter attachment, transaction-aware reads, multiple result sets, JSON mapping, and scalar execution.
+
 ## [1.0.10.12]
 ### Changed
 - Updated `ReadGenericRepositoryRepoDB` to fully implement the current `IReadGenericRepository` contract with `IDbConnection`/`IDbTransaction` overloads for `QueryAndReturnJson`, `ExecuteScalar`, and `Max`.
